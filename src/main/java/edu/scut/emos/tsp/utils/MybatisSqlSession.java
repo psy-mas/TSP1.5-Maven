@@ -19,10 +19,21 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
  */
 public class MybatisSqlSession {
 
+	/**
+	 * 定义资源文件位置
+	 */
 	private static String resource = "mybatis-config.xml";
 
+	/**
+	 * 单例SqlSessionFactory
+	 */
 	private static SqlSessionFactory sqlSessionFactory;
 
+	/**
+	 * 获取单例SqlSessionFactory
+	 * 
+	 * @return SqlSessionFactory
+	 */
 	public static synchronized SqlSessionFactory getSqlSessionFactory() {
 		if (sqlSessionFactory == null) {
 			InputStream inputStream;
@@ -37,6 +48,11 @@ public class MybatisSqlSession {
 		return sqlSessionFactory;
 	}
 
+	/**
+	 * 获取openSession
+	 * 
+	 * @return SqlSession
+	 */
 	public static synchronized SqlSession openSession() {
 		return getSqlSessionFactory().openSession();
 	}
