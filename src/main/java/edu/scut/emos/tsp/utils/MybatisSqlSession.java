@@ -1,6 +1,6 @@
 package edu.scut.emos.tsp.utils;
 /**
- * @author Qinzheng
+ * @author emos
  */
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 /**
  * 维护一个单例SqlSessionFactory
  * 
- * @author Qinzheng
+ * @author emos
  *
  */
 public class MybatisSqlSession {

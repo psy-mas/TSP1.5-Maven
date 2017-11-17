@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Qinzheng
+ * @author emos
  */
 public class Debugtask implements StreamTask {
 	  private static final SystemStream OUTPUT_STREAM = new SystemStream("kafka", "tsp_debug_1");
