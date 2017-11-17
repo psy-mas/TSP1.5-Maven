@@ -53,7 +53,7 @@ public class MybatisSqlSession {
 	 * 
 	 * @return SqlSession
 	 */
-	public static synchronized SqlSession openSession() {
+	public static SqlSession openSession() {
 		return getSqlSessionFactory().openSession();
 	}
 }
