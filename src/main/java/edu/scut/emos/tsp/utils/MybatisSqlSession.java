@@ -11,6 +11,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+/**
+ * 维护一个单例SqlSessionFactory
+ * 
+ * @author Qinzheng
+ *
+ */
 public class MybatisSqlSession {
 
 	private static String resource = "mybatis-config.xml";
