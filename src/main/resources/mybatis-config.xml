@@ -14,6 +14,19 @@
 		</environment>
 	</environments>
 	<mappers>
-		<package name="edu.scut.emos.tsp.mapping" />
+		<mapper resource="edu/scut/emos/tsp/dao/mysql/mapping/DOrderMapper.xml" />
+		<mapper resource="edu/scut/emos/tsp/dao/mysql/mapping/DRouteMapper.xml" />
+		<mapper
+			resource="edu/scut/emos/tsp/dao/mysql/mapping/DWindowCacheResultMapper.xml" />
+		<mapper
+			resource="edu/scut/emos/tsp/dao/mysql/mapping/DWindowCacheResultOrderMapper.xml" />
+		<mapper
+			resource="edu/scut/emos/tsp/dao/mysql/mapping/DWindowCacheResultRouteMapper.xml" />
+		<mapper
+			resource="edu/scut/emos/tsp/dao/mysql/mapping/DWindowCommitCacheResultMapper.xml" />
+		<mapper
+			resource="edu/scut/emos/tsp/dao/mysql/mapping/DWindowCommitRecomputationOrderMapper.xml" />
+		<mapper
+			resource="edu/scut/emos/tsp/dao/mysql/mapping/DWindowCommitResultMapper.xml" />
 	</mappers>
 </configuration>

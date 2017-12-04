@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.scut.emos.tsp.dao.mysql.DWindowCacheResultMapper" >
+  <resultMap id="BaseResultMap" type="edu.scut.emos.tsp.model.DWindowCacheResult" >
+    <id column="cacheresultid" property="cacheresultid" jdbcType="VARCHAR" />
+    <result column="vehicleid" property="vehicleid" jdbcType="VARCHAR" />
+    <result column="lastupdatetime" property="lastupdatetime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cacheresultid, vehicleid, lastupdatetime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_window_cacheresult
+    where cacheresultid = #{cacheresultid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_window_cacheresult
+    where cacheresultid = #{cacheresultid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="edu.scut.emos.tsp.model.DWindowCacheResult" >
+    insert into t_window_cacheresult (cacheresultid, vehicleid, lastupdatetime
+      )
+    values (#{cacheresultid,jdbcType=VARCHAR}, #{vehicleid,jdbcType=VARCHAR}, #{lastupdatetime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.scut.emos.tsp.model.DWindowCacheResult" >
+    insert into t_window_cacheresult
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cacheresultid != null" >
+        cacheresultid,
+      </if>
+      <if test="vehicleid != null" >
+        vehicleid,
+      </if>
+      <if test="lastupdatetime != null" >
+        lastupdatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cacheresultid != null" >
+        #{cacheresultid,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleid != null" >
+        #{vehicleid,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupdatetime != null" >
+        #{lastupdatetime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.scut.emos.tsp.model.DWindowCacheResult" >
+    update t_window_cacheresult
+    <set >
+      <if test="vehicleid != null" >
+        vehicleid = #{vehicleid,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupdatetime != null" >
+        lastupdatetime = #{lastupdatetime,jdbcType=DATE},
+      </if>
+    </set>
+    where cacheresultid = #{cacheresultid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.scut.emos.tsp.model.DWindowCacheResult" >
+    update t_window_cacheresult
+    set vehicleid = #{vehicleid,jdbcType=VARCHAR},
+      lastupdatetime = #{lastupdatetime,jdbcType=DATE}
+    where cacheresultid = #{cacheresultid,jdbcType=VARCHAR}
+  </update>
+</mapper>

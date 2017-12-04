@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.scut.emos.tsp.dao.mysql.DRouteMapper" >
+  <resultMap id="BaseResultMap" type="edu.scut.emos.tsp.model.DRoute" >
+    <id column="routeid" property="routeid" jdbcType="VARCHAR" />
+    <result column="vehicleid" property="vehicleid" jdbcType="VARCHAR" />
+    <result column="routeorderid" property="routeorderid" jdbcType="VARCHAR" />
+    <result column="action" property="action" jdbcType="TINYINT" />
+    <result column="isloaded" property="isloaded" jdbcType="TINYINT" />
+    <result column="sequence" property="sequence" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    routeid, vehicleid, routeorderid, action, isloaded, sequence
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_route
+    where routeid = #{routeid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_route
+    where routeid = #{routeid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="edu.scut.emos.tsp.model.DRoute" >
+    insert into t_route (routeid, vehicleid, routeorderid, 
+      action, isloaded, sequence
+      )
+    values (#{routeid,jdbcType=VARCHAR}, #{vehicleid,jdbcType=VARCHAR}, #{routeorderid,jdbcType=VARCHAR}, 
+      #{action,jdbcType=TINYINT}, #{isloaded,jdbcType=TINYINT}, #{sequence,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.scut.emos.tsp.model.DRoute" >
+    insert into t_route
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="routeid != null" >
+        routeid,
+      </if>
+      <if test="vehicleid != null" >
+        vehicleid,
+      </if>
+      <if test="routeorderid != null" >
+        routeorderid,
+      </if>
+      <if test="action != null" >
+        action,
+      </if>
+      <if test="isloaded != null" >
+        isloaded,
+      </if>
+      <if test="sequence != null" >
+        sequence,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="routeid != null" >
+        #{routeid,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicleid != null" >
+        #{vehicleid,jdbcType=VARCHAR},
+      </if>
+      <if test="routeorderid != null" >
+        #{routeorderid,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=TINYINT},
+      </if>
+      <if test="isloaded != null" >
+        #{isloaded,jdbcType=TINYINT},
+      </if>
+      <if test="sequence != null" >
+        #{sequence,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.scut.emos.tsp.model.DRoute" >
+    update t_route
+    <set >
+      <if test="vehicleid != null" >
+        vehicleid = #{vehicleid,jdbcType=VARCHAR},
+      </if>
+      <if test="routeorderid != null" >
+        routeorderid = #{routeorderid,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null" >
+        action = #{action,jdbcType=TINYINT},
+      </if>
+      <if test="isloaded != null" >
+        isloaded = #{isloaded,jdbcType=TINYINT},
+      </if>
+      <if test="sequence != null" >
+        sequence = #{sequence,jdbcType=INTEGER},
+      </if>
+    </set>
+    where routeid = #{routeid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.scut.emos.tsp.model.DRoute" >
+    update t_route
+    set vehicleid = #{vehicleid,jdbcType=VARCHAR},
+      routeorderid = #{routeorderid,jdbcType=VARCHAR},
+      action = #{action,jdbcType=TINYINT},
+      isloaded = #{isloaded,jdbcType=TINYINT},
+      sequence = #{sequence,jdbcType=INTEGER}
+    where routeid = #{routeid,jdbcType=VARCHAR}
+  </update>
+</mapper>

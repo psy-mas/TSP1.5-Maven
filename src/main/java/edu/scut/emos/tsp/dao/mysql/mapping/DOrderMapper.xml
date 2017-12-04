@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.scut.emos.tsp.dao.mysql.DOrderMapper" >
+  <resultMap id="BaseResultMap" type="edu.scut.emos.tsp.model.DOrder" >
+    <id column="orderid" property="orderid" jdbcType="VARCHAR" />
+    <result column="pickuplongitude" property="pickuplongitude" jdbcType="DOUBLE" />
+    <result column="pickuplatitude" property="pickuplatitude" jdbcType="DOUBLE" />
+    <result column="deliverylongitude" property="deliverylongitude" jdbcType="DOUBLE" />
+    <result column="deliverylatitude" property="deliverylatitude" jdbcType="DOUBLE" />
+    <result column="typeofgoods" property="typeofgoods" jdbcType="VARCHAR" />
+    <result column="weightofgoods" property="weightofgoods" jdbcType="DOUBLE" />
+    <result column="volumeofgoods" property="volumeofgoods" jdbcType="DOUBLE" />
+    <result column="earlytimeofpickup" property="earlytimeofpickup" jdbcType="DATE" />
+    <result column="earlytimeofdelivery" property="earlytimeofdelivery" jdbcType="DATE" />
+    <result column="lasttimeofpickup" property="lasttimeofpickup" jdbcType="DATE" />
+    <result column="lasttimeofdelivery" property="lasttimeofdelivery" jdbcType="DATE" />
+    <result column="pickupservicetime" property="pickupservicetime" jdbcType="DOUBLE" />
+    <result column="deliveryservicetime" property="deliveryservicetime" jdbcType="DOUBLE" />
+    <result column="serviceresult" property="serviceresult" jdbcType="VARCHAR" />
+    <result column="commendvehicle" property="commendvehicle" jdbcType="VARCHAR" />
+    <result column="factualvehicle" property="factualvehicle" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    orderid, pickuplongitude, pickuplatitude, deliverylongitude, deliverylatitude, typeofgoods, 
+    weightofgoods, volumeofgoods, earlytimeofpickup, earlytimeofdelivery, lasttimeofpickup, 
+    lasttimeofdelivery, pickupservicetime, deliveryservicetime, serviceresult, commendvehicle, 
+    factualvehicle
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_order
+    where orderid = #{orderid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_order
+    where orderid = #{orderid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="edu.scut.emos.tsp.model.DOrder" >
+    insert into t_order (orderid, pickuplongitude, pickuplatitude, 
+      deliverylongitude, deliverylatitude, typeofgoods, 
+      weightofgoods, volumeofgoods, earlytimeofpickup, 
+      earlytimeofdelivery, lasttimeofpickup, lasttimeofdelivery, 
+      pickupservicetime, deliveryservicetime, serviceresult, 
+      commendvehicle, factualvehicle)
+    values (#{orderid,jdbcType=VARCHAR}, #{pickuplongitude,jdbcType=DOUBLE}, #{pickuplatitude,jdbcType=DOUBLE}, 
+      #{deliverylongitude,jdbcType=DOUBLE}, #{deliverylatitude,jdbcType=DOUBLE}, #{typeofgoods,jdbcType=VARCHAR}, 
+      #{weightofgoods,jdbcType=DOUBLE}, #{volumeofgoods,jdbcType=DOUBLE}, #{earlytimeofpickup,jdbcType=DATE}, 
+      #{earlytimeofdelivery,jdbcType=DATE}, #{lasttimeofpickup,jdbcType=DATE}, #{lasttimeofdelivery,jdbcType=DATE}, 
+      #{pickupservicetime,jdbcType=DOUBLE}, #{deliveryservicetime,jdbcType=DOUBLE}, #{serviceresult,jdbcType=VARCHAR}, 
+      #{commendvehicle,jdbcType=VARCHAR}, #{factualvehicle,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.scut.emos.tsp.model.DOrder" >
+    insert into t_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="pickuplongitude != null" >
+        pickuplongitude,
+      </if>
+      <if test="pickuplatitude != null" >
+        pickuplatitude,
+      </if>
+      <if test="deliverylongitude != null" >
+        deliverylongitude,
+      </if>
+      <if test="deliverylatitude != null" >
+        deliverylatitude,
+      </if>
+      <if test="typeofgoods != null" >
+        typeofgoods,
+      </if>
+      <if test="weightofgoods != null" >
+        weightofgoods,
+      </if>
+      <if test="volumeofgoods != null" >
+        volumeofgoods,
+      </if>
+      <if test="earlytimeofpickup != null" >
+        earlytimeofpickup,
+      </if>
+      <if test="earlytimeofdelivery != null" >
+        earlytimeofdelivery,
+      </if>
+      <if test="lasttimeofpickup != null" >
+        lasttimeofpickup,
+      </if>
+      <if test="lasttimeofdelivery != null" >
+        lasttimeofdelivery,
+      </if>
+      <if test="pickupservicetime != null" >
+        pickupservicetime,
+      </if>
+      <if test="deliveryservicetime != null" >
+        deliveryservicetime,
+      </if>
+      <if test="serviceresult != null" >
+        serviceresult,
+      </if>
+      <if test="commendvehicle != null" >
+        commendvehicle,
+      </if>
+      <if test="factualvehicle != null" >
+        factualvehicle,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="pickuplongitude != null" >
+        #{pickuplongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="pickuplatitude != null" >
+        #{pickuplatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="deliverylongitude != null" >
+        #{deliverylongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="deliverylatitude != null" >
+        #{deliverylatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="typeofgoods != null" >
+        #{typeofgoods,jdbcType=VARCHAR},
+      </if>
+      <if test="weightofgoods != null" >
+        #{weightofgoods,jdbcType=DOUBLE},
+      </if>
+      <if test="volumeofgoods != null" >
+        #{volumeofgoods,jdbcType=DOUBLE},
+      </if>
+      <if test="earlytimeofpickup != null" >
+        #{earlytimeofpickup,jdbcType=DATE},
+      </if>
+      <if test="earlytimeofdelivery != null" >
+        #{earlytimeofdelivery,jdbcType=DATE},
+      </if>
+      <if test="lasttimeofpickup != null" >
+        #{lasttimeofpickup,jdbcType=DATE},
+      </if>
+      <if test="lasttimeofdelivery != null" >
+        #{lasttimeofdelivery,jdbcType=DATE},
+      </if>
+      <if test="pickupservicetime != null" >
+        #{pickupservicetime,jdbcType=DOUBLE},
+      </if>
+      <if test="deliveryservicetime != null" >
+        #{deliveryservicetime,jdbcType=DOUBLE},
+      </if>
+      <if test="serviceresult != null" >
+        #{serviceresult,jdbcType=VARCHAR},
+      </if>
+      <if test="commendvehicle != null" >
+        #{commendvehicle,jdbcType=VARCHAR},
+      </if>
+      <if test="factualvehicle != null" >
+        #{factualvehicle,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.scut.emos.tsp.model.DOrder" >
+    update t_order
+    <set >
+      <if test="pickuplongitude != null" >
+        pickuplongitude = #{pickuplongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="pickuplatitude != null" >
+        pickuplatitude = #{pickuplatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="deliverylongitude != null" >
+        deliverylongitude = #{deliverylongitude,jdbcType=DOUBLE},
+      </if>
+      <if test="deliverylatitude != null" >
+        deliverylatitude = #{deliverylatitude,jdbcType=DOUBLE},
+      </if>
+      <if test="typeofgoods != null" >
+        typeofgoods = #{typeofgoods,jdbcType=VARCHAR},
+      </if>
+      <if test="weightofgoods != null" >
+        weightofgoods = #{weightofgoods,jdbcType=DOUBLE},
+      </if>
+      <if test="volumeofgoods != null" >
+        volumeofgoods = #{volumeofgoods,jdbcType=DOUBLE},
+      </if>
+      <if test="earlytimeofpickup != null" >
+        earlytimeofpickup = #{earlytimeofpickup,jdbcType=DATE},
+      </if>
+      <if test="earlytimeofdelivery != null" >
+        earlytimeofdelivery = #{earlytimeofdelivery,jdbcType=DATE},
+      </if>
+      <if test="lasttimeofpickup != null" >
+        lasttimeofpickup = #{lasttimeofpickup,jdbcType=DATE},
+      </if>
+      <if test="lasttimeofdelivery != null" >
+        lasttimeofdelivery = #{lasttimeofdelivery,jdbcType=DATE},
+      </if>
+      <if test="pickupservicetime != null" >
+        pickupservicetime = #{pickupservicetime,jdbcType=DOUBLE},
+      </if>
+      <if test="deliveryservicetime != null" >
+        deliveryservicetime = #{deliveryservicetime,jdbcType=DOUBLE},
+      </if>
+      <if test="serviceresult != null" >
+        serviceresult = #{serviceresult,jdbcType=VARCHAR},
+      </if>
+      <if test="commendvehicle != null" >
+        commendvehicle = #{commendvehicle,jdbcType=VARCHAR},
+      </if>
+      <if test="factualvehicle != null" >
+        factualvehicle = #{factualvehicle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where orderid = #{orderid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.scut.emos.tsp.model.DOrder" >
+    update t_order
+    set pickuplongitude = #{pickuplongitude,jdbcType=DOUBLE},
+      pickuplatitude = #{pickuplatitude,jdbcType=DOUBLE},
+      deliverylongitude = #{deliverylongitude,jdbcType=DOUBLE},
+      deliverylatitude = #{deliverylatitude,jdbcType=DOUBLE},
+      typeofgoods = #{typeofgoods,jdbcType=VARCHAR},
+      weightofgoods = #{weightofgoods,jdbcType=DOUBLE},
+      volumeofgoods = #{volumeofgoods,jdbcType=DOUBLE},
+      earlytimeofpickup = #{earlytimeofpickup,jdbcType=DATE},
+      earlytimeofdelivery = #{earlytimeofdelivery,jdbcType=DATE},
+      lasttimeofpickup = #{lasttimeofpickup,jdbcType=DATE},
+      lasttimeofdelivery = #{lasttimeofdelivery,jdbcType=DATE},
+      pickupservicetime = #{pickupservicetime,jdbcType=DOUBLE},
+      deliveryservicetime = #{deliveryservicetime,jdbcType=DOUBLE},
+      serviceresult = #{serviceresult,jdbcType=VARCHAR},
+      commendvehicle = #{commendvehicle,jdbcType=VARCHAR},
+      factualvehicle = #{factualvehicle,jdbcType=VARCHAR}
+    where orderid = #{orderid,jdbcType=VARCHAR}
+  </update>
+</mapper>
