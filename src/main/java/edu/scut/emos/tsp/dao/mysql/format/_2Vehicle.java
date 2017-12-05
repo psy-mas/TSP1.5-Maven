@@ -23,14 +23,7 @@ import edu.scut.emos.tsp.model.Vehicle;
  */
 public class _2Vehicle {
 	
-	private static MySQLTrans mySQLTrans = null;
-
 	public static Vehicle a(DVehicle dVehicle, List<DRoute> dRoutes) {
-		// 初始化mySQLTrans
-		if(mySQLTrans == null) {
-			mySQLTrans = new MySQLTrans();
-		}
-		
 		LinkedList<ScheduleTask> loadedTasks = new LinkedList<ScheduleTask>();
 		LinkedList<ScheduleTask> planTasks = new LinkedList<ScheduleTask>();
 		
@@ -50,7 +43,7 @@ public class _2Vehicle {
 		
 		// 查询order
 		Map<String, Order> dOrdermap = new HashMap<String, Order>();
-		List<DOrder> dOrders = mySQLTrans.dOrderSelectAllByOrderids(dRouteorderids);
+		List<DOrder> dOrders = MySQLDaoAdapter.dOrderSelectAllByOrderids(dRouteorderids);
 		if(dOrders == null) {
 			// 查询不到order数据
 		}
