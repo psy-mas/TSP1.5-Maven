@@ -2,6 +2,10 @@ package edu.scut.emos.tsp.model;
 
 import java.util.Date;
 
+/**
+ * @author emos
+ *
+ */
 public class DWindowCacheResult {
     private String cacheresultid;
 

@@ -2,6 +2,10 @@ package edu.scut.emos.tsp.dao.mysql;
 
 import edu.scut.emos.tsp.model.DRoute;
 
+/**
+ * @author emos
+ *
+ */
 public interface DRouteMapper {
     int deleteByPrimaryKey(String routeid);
 

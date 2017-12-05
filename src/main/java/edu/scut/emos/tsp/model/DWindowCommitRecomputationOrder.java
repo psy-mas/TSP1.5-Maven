@@ -1,5 +1,9 @@
 package edu.scut.emos.tsp.model;
 
+/**
+ * @author emos
+ *
+ */
 public class DWindowCommitRecomputationOrder {
     private String commitrecomputationorderid;
 

@@ -12,7 +12,6 @@ import edu.scut.emos.tsp.utils.MybatisSqlSession;
  * @author emos
  *
  */
-
 public class JunitTest {
 	private SqlSession s;
 	
@@ -24,6 +23,11 @@ public class JunitTest {
 	@Test
 	public void test1() {
 		System.out.println("this is test1");
+		
+		byte a;
+		boolean b = true;
+		a = (byte) (b ? 1 : 0);
+		System.out.println(a);
 	}
 	
 	@Test

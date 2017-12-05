@@ -1,7 +1,13 @@
 package edu.scut.emos.tsp.dao.mysql;
 
+import java.util.List;
+
 import edu.scut.emos.tsp.model.DWindowCacheResultOrder;
 
+/**
+ * @author emos
+ *
+ */
 public interface DWindowCacheResultOrderMapper {
     int deleteByPrimaryKey(String cacheresultordersid);
 
@@ -14,4 +20,8 @@ public interface DWindowCacheResultOrderMapper {
     int updateByPrimaryKeySelective(DWindowCacheResultOrder record);
 
     int updateByPrimaryKey(DWindowCacheResultOrder record);
+    
+    // 添加方法
+    
+    int insertAll(List<DWindowCacheResultOrder> records);
 }

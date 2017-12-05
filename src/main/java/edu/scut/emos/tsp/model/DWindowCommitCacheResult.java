@@ -1,5 +1,9 @@
 package edu.scut.emos.tsp.model;
 
+/**
+ * @author emos
+ *
+ */
 public class DWindowCommitCacheResult {
     private String commitcacheresultid;
 

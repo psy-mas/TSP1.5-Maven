@@ -1,82 +1,104 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="edu.scut.emos.tsp.dao.mysql.DWindowCommitCacheResultMapper" >
-  <resultMap id="BaseResultMap" type="edu.scut.emos.tsp.model.DWindowCommitCacheResult" >
-    <id column="commitcacheresultid" property="commitcacheresultid" jdbcType="VARCHAR" />
-    <result column="commitresultid" property="commitresultid" jdbcType="VARCHAR" />
-    <result column="cacheresultid" property="cacheresultid" jdbcType="VARCHAR" />
-    <result column="isvalid" property="isvalid" jdbcType="TINYINT" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    commitcacheresultid, commitresultid, cacheresultid, isvalid
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_window_commitcacheresult
-    where commitcacheresultid = #{commitcacheresultid,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from t_window_commitcacheresult
-    where commitcacheresultid = #{commitcacheresultid,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="edu.scut.emos.tsp.model.DWindowCommitCacheResult" >
-    insert into t_window_commitcacheresult (commitcacheresultid, commitresultid, 
-      cacheresultid, isvalid)
-    values (#{commitcacheresultid,jdbcType=VARCHAR}, #{commitresultid,jdbcType=VARCHAR}, 
-      #{cacheresultid,jdbcType=VARCHAR}, #{isvalid,jdbcType=TINYINT})
-  </insert>
-  <insert id="insertSelective" parameterType="edu.scut.emos.tsp.model.DWindowCommitCacheResult" >
-    insert into t_window_commitcacheresult
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="commitcacheresultid != null" >
-        commitcacheresultid,
-      </if>
-      <if test="commitresultid != null" >
-        commitresultid,
-      </if>
-      <if test="cacheresultid != null" >
-        cacheresultid,
-      </if>
-      <if test="isvalid != null" >
-        isvalid,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="commitcacheresultid != null" >
-        #{commitcacheresultid,jdbcType=VARCHAR},
-      </if>
-      <if test="commitresultid != null" >
-        #{commitresultid,jdbcType=VARCHAR},
-      </if>
-      <if test="cacheresultid != null" >
-        #{cacheresultid,jdbcType=VARCHAR},
-      </if>
-      <if test="isvalid != null" >
-        #{isvalid,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.scut.emos.tsp.model.DWindowCommitCacheResult" >
-    update t_window_commitcacheresult
-    <set >
-      <if test="commitresultid != null" >
-        commitresultid = #{commitresultid,jdbcType=VARCHAR},
-      </if>
-      <if test="cacheresultid != null" >
-        cacheresultid = #{cacheresultid,jdbcType=VARCHAR},
-      </if>
-      <if test="isvalid != null" >
-        isvalid = #{isvalid,jdbcType=TINYINT},
-      </if>
-    </set>
-    where commitcacheresultid = #{commitcacheresultid,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="edu.scut.emos.tsp.model.DWindowCommitCacheResult" >
-    update t_window_commitcacheresult
-    set commitresultid = #{commitresultid,jdbcType=VARCHAR},
-      cacheresultid = #{cacheresultid,jdbcType=VARCHAR},
-      isvalid = #{isvalid,jdbcType=TINYINT}
-    where commitcacheresultid = #{commitcacheresultid,jdbcType=VARCHAR}
-  </update>
+<mapper namespace="edu.scut.emos.tsp.dao.mysql.DWindowCommitCacheResultMapper">
+	<resultMap id="BaseResultMap"
+		type="edu.scut.emos.tsp.model.DWindowCommitCacheResult">
+		<id column="commitcacheresultid" property="commitcacheresultid"
+			jdbcType="VARCHAR" />
+		<result column="commitresultid" property="commitresultid"
+			jdbcType="VARCHAR" />
+		<result column="cacheresultid" property="cacheresultid"
+			jdbcType="VARCHAR" />
+		<result column="isvalid" property="isvalid" jdbcType="TINYINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		commitcacheresultid, commitresultid, cacheresultid, isvalid
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_window_commitcacheresult
+		where commitcacheresultid = #{commitcacheresultid,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from t_window_commitcacheresult
+		where commitcacheresultid = #{commitcacheresultid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="edu.scut.emos.tsp.model.DWindowCommitCacheResult">
+		insert into t_window_commitcacheresult (commitcacheresultid,
+		commitresultid,
+		cacheresultid, isvalid)
+		values (#{commitcacheresultid,jdbcType=VARCHAR},
+		#{commitresultid,jdbcType=VARCHAR},
+		#{cacheresultid,jdbcType=VARCHAR}, #{isvalid,jdbcType=TINYINT})
+	</insert>
+	<insert id="insertSelective" parameterType="edu.scut.emos.tsp.model.DWindowCommitCacheResult">
+		insert into t_window_commitcacheresult
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="commitcacheresultid != null">
+				commitcacheresultid,
+			</if>
+			<if test="commitresultid != null">
+				commitresultid,
+			</if>
+			<if test="cacheresultid != null">
+				cacheresultid,
+			</if>
+			<if test="isvalid != null">
+				isvalid,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="commitcacheresultid != null">
+				#{commitcacheresultid,jdbcType=VARCHAR},
+			</if>
+			<if test="commitresultid != null">
+				#{commitresultid,jdbcType=VARCHAR},
+			</if>
+			<if test="cacheresultid != null">
+				#{cacheresultid,jdbcType=VARCHAR},
+			</if>
+			<if test="isvalid != null">
+				#{isvalid,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="edu.scut.emos.tsp.model.DWindowCommitCacheResult">
+		update t_window_commitcacheresult
+		<set>
+			<if test="commitresultid != null">
+				commitresultid = #{commitresultid,jdbcType=VARCHAR},
+			</if>
+			<if test="cacheresultid != null">
+				cacheresultid = #{cacheresultid,jdbcType=VARCHAR},
+			</if>
+			<if test="isvalid != null">
+				isvalid = #{isvalid,jdbcType=TINYINT},
+			</if>
+		</set>
+		where commitcacheresultid = #{commitcacheresultid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="edu.scut.emos.tsp.model.DWindowCommitCacheResult">
+		update t_window_commitcacheresult
+		set commitresultid = #{commitresultid,jdbcType=VARCHAR},
+		cacheresultid = #{cacheresultid,jdbcType=VARCHAR},
+		isvalid = #{isvalid,jdbcType=TINYINT}
+		where commitcacheresultid = #{commitcacheresultid,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 添加方法 -->
+	<insert id="insertAll" parameterType="java.util.List">
+		insert into t_window_commitcacheresult (commitcacheresultid,
+		commitresultid,
+		cacheresultid, isvalid)
+		values
+		<foreach collection="list" item="record" index="index"
+			separator=",">
+			(#{record.commitcacheresultid,jdbcType=VARCHAR},
+			#{record.commitresultid,jdbcType=VARCHAR},
+			#{record.cacheresultid,jdbcType=VARCHAR},
+			#{record.isvalid,jdbcType=TINYINT})
+		</foreach>
+	</insert>
 </mapper>

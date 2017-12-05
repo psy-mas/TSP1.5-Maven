@@ -56,4 +56,13 @@ public class MybatisSqlSession {
 	public static SqlSession openSession() {
 		return getSqlSessionFactory().openSession();
 	}
+	
+	/**
+	 * 获取openSession，手动提交事务
+	 * 
+	 * @return SqlSession
+	 */
+	public static SqlSession openSessionManually() {
+		return getSqlSessionFactory().openSession(false);
+	}
 }

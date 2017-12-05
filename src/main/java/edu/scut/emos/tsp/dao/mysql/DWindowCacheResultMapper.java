@@ -1,7 +1,13 @@
 package edu.scut.emos.tsp.dao.mysql;
 
+import java.util.List;
+
 import edu.scut.emos.tsp.model.DWindowCacheResult;
 
+/**
+ * @author emos
+ *
+ */
 public interface DWindowCacheResultMapper {
     int deleteByPrimaryKey(String cacheresultid);
 
@@ -14,4 +20,8 @@ public interface DWindowCacheResultMapper {
     int updateByPrimaryKeySelective(DWindowCacheResult record);
 
     int updateByPrimaryKey(DWindowCacheResult record);
+    
+    // 添加方法
+    
+    int insertAll(List<DWindowCacheResult> records);
 }
