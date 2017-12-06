@@ -71,7 +71,8 @@ public class Cache {
      * @return 可以装载在该车辆中的提交结果
      */
     private CacheResult mergeVehicleRoute(Vehicle vehicle, List<AlgorithmResult> results) {
-        AlgorithmResult[] resultArrays = (AlgorithmResult[]) results.toArray();
+        AlgorithmResult[] resultArrays = new AlgorithmResult[results.size()];
+        resultArrays = results.toArray(resultArrays);
         Arrays.sort(resultArrays);  // 按result中路径的cost从小到大排序
 
         // 将该车匹配的订单ID存入List中

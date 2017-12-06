@@ -51,7 +51,10 @@ public class AlgorithmResult implements Comparable<AlgorithmResult> {
         if (recommendRoute == null) {
             return "订单不可服务";
         } else {
-            return recommendRoute.toString();
+            return "AlgorithmResult: {\n" +
+                    "vehicleId: " + vehicle.getId() + "\n" +
+                    "orderId:" + order.getId() + "\n" +
+                    "routeId: " + recommendRoute.toString() + "\n}";
         }
     }
 }

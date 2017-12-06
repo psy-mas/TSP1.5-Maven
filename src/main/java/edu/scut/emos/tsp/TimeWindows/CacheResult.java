@@ -19,7 +19,7 @@ public class CacheResult {
         this.orderIds = new LinkedList<>();
         this.orderIds.addAll(orderIds);
         this.recommendRoute = recommendRoute.clone();
-        this.lastUpdateTime = (Date) lastUpdateTime.clone();
+        this.lastUpdateTime = lastUpdateTime == null ? null : (Date) lastUpdateTime.clone();
     }
 
     public String getVehicleId() {
@@ -52,5 +52,15 @@ public class CacheResult {
 
     public void setLastUpdateTime(Date lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "CacheResult {\n" +
+                "vehicleId: " + vehicleId + '\n' +
+                "orderIds: " + orderIds + "\n" +
+                "recommendRoute: " + recommendRoute + "\n" +
+                "lastUpdateTime: " + lastUpdateTime + "\n" +
+                '}';
     }
 }

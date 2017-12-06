@@ -38,17 +38,25 @@ public class Route {
     }
 
     public Route(LinkedList<ScheduleTask> doneTasks, LinkedList<ScheduleTask> planTasks) {
-        // 将已完成的任务列表转，转化为 已装载在车的任务列表
-        this.loadedTasks = RouteTools.loadedTaskInVehicle(doneTasks);
+        if (doneTasks != null && planTasks != null) {
+            // 将已完成的任务列表转，转化为 已装载在车的任务列表
+            this.loadedTasks = RouteTools.loadedTaskInVehicle(doneTasks);
 
-        // 获取计划任务列表的拷贝
-        this.planTasks = new LinkedList<>();
-        this.planTasks.addAll(planTasks);
+            // 获取计划任务列表的拷贝
+            this.planTasks = new LinkedList<>();
+            this.planTasks.addAll(planTasks);
 
-        // 获取车辆整个路线列表
-        this.tasks = new LinkedList<>();
-        this.tasks.addAll(this.loadedTasks);
-        this.tasks.addAll(this.planTasks);
+            // 获取车辆整个路线列表
+            this.tasks = new LinkedList<>();
+            this.tasks.addAll(this.loadedTasks);
+            this.tasks.addAll(this.planTasks);
+        } else {
+            this.loadedTasks = new LinkedList<>();
+            this.planTasks = new LinkedList<>();
+            this.tasks = new LinkedList<>();
+        }
+
+
 
         this.cost = 0;
         this.distanceCost = 0;
@@ -393,7 +401,7 @@ public class Route {
 
     @Override
     public String toString() {
-        String tmp = "";
+        String tmp = "Route {\n";
         tmp += "loaded tasks: ";
         for (ScheduleTask scheduleTask : loadedTasks) {
             tmp += " " + scheduleTask.toString();
@@ -410,7 +418,7 @@ public class Route {
                 "distance cost: " + this.distanceCost + "\n" +
                 "wait time cost: " + this.waitTimeCost + "\n" +
                 "delay time cost: " + this.delayTimeCost + "\n" +
-                "draw out cost: " + this.drawOutCost + "\n";
+                "draw out cost: " + this.drawOutCost + "\n}";
         return tmp;
     }
 }

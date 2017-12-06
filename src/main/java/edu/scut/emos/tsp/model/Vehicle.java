@@ -178,6 +178,11 @@ public class Vehicle {
     }
 
     @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
     public Vehicle clone() {
         Vehicle newVehicle = null;
         Position positionTmp = position == null ? null : position.clone();
@@ -194,11 +199,11 @@ public class Vehicle {
     @Override
     public String toString() {
         return "Vehicle {" + "\n" +
-                "id: " + id + "\n" +
-                "max weight: " + maxWeight + "\n" +
-                "max volume: " + maxVolume + "\n" +
-                "position: " + (position == null ? "" : AddressTranslation.addressTranslation(position) + " " + position.toString()) + "\n" +
-                "gps update time: " + (gpsUpdateTime == null ? "" : gpsUpdateTime.toString()) + "\n" +
-                (route == null ? "no route" : route.toString()) + "}\n";
+                "   id: " + id + "\n" +
+                "   max weight: " + maxWeight + "\n" +
+                "   max volume: " + maxVolume + "\n" +
+                "   position: " + (position == null ? "" : AddressTranslation.addressTranslation(position) + " " + position.toString()) + "\n" +
+                "   gps update time: " + (gpsUpdateTime == null ? "" : gpsUpdateTime.toString()) + "\n" +
+                "   " + (route == null ? "no route" : route.toString()) + "}\n";
     }
 }

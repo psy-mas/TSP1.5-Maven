@@ -31,4 +31,12 @@ public class CommitResult {
     public void setRecomputationOrderIDs(LinkedList<String> recomputationOrderIDs) {
         this.recomputationOrderIDs = recomputationOrderIDs;
     }
+
+    @Override
+    public String toString() {
+        return "CommitResult {\n" +
+                "   cacheResults: " + cacheResults.toString() + "\n" +
+                "   recomputationOrderIDs: " + recomputationOrderIDs.toString() + "\n" +
+                '}';
+    }
 }
