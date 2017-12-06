@@ -204,6 +204,6 @@ public class Vehicle {
                 "   max volume: " + maxVolume + "\n" +
                 "   position: " + (position == null ? "" : AddressTranslation.addressTranslation(position) + " " + position.toString()) + "\n" +
                 "   gps update time: " + (gpsUpdateTime == null ? "" : gpsUpdateTime.toString()) + "\n" +
-                "   " + (route == null ? "no route" : route.toString()) + "}\n";
+                "   " + (route == null ? "no route" : route.toString()) + "\n}\n";
     }
 }

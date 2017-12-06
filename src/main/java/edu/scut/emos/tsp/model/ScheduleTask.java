@@ -37,6 +37,6 @@ public class ScheduleTask {
 
     @Override
     public String toString() {
-        return order.getId() + " " + String.valueOf(action) + ";";
+        return order.getId() + " " + (action == 1 ? "上货" : "下货") + ";";
     }
 }

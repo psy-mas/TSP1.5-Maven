@@ -401,24 +401,22 @@ public class Route {
 
     @Override
     public String toString() {
-        String tmp = "Route {\n";
+        String tmp = "Route {";
         tmp += "loaded tasks: ";
         for (ScheduleTask scheduleTask : loadedTasks) {
             tmp += " " + scheduleTask.toString();
         }
-        tmp += "\n";
 
-        tmp += "plan tasks: ";
+        tmp += ", plan tasks: ";
         for (ScheduleTask scheduleTask : planTasks) {
             tmp += " " + scheduleTask.toString();
         }
-        tmp += "\n";
 
-        tmp += "cost: " + this.cost + "\n" +
-                "distance cost: " + this.distanceCost + "\n" +
-                "wait time cost: " + this.waitTimeCost + "\n" +
-                "delay time cost: " + this.delayTimeCost + "\n" +
-                "draw out cost: " + this.drawOutCost + "\n}";
+        tmp += ", cost: " + this.cost +
+                ", distance cost: " + this.distanceCost +
+                ", wait time cost: " + this.waitTimeCost +
+                ", delay time cost: " + this.delayTimeCost +
+                ", draw out cost: " + this.drawOutCost + "}";
         return tmp;
     }
 }

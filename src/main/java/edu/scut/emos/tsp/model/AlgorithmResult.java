@@ -43,7 +43,9 @@ public class AlgorithmResult implements Comparable<AlgorithmResult> {
     public AlgorithmResult clone() {
         Vehicle vehicleTmp = vehicle == null ? null : vehicle.clone();
         Order orderTmp = order == null ? null : order.clone();
-        return new AlgorithmResult(vehicleTmp, orderTmp, recommendRoute.clone());
+
+        Route recommendRouteTmp = recommendRoute == null ? null : recommendRoute;
+        return new AlgorithmResult(vehicleTmp, orderTmp, recommendRouteTmp);
     }
 
     @Override
@@ -54,7 +56,7 @@ public class AlgorithmResult implements Comparable<AlgorithmResult> {
             return "AlgorithmResult: {\n" +
                     "vehicleId: " + vehicle.getId() + "\n" +
                     "orderId:" + order.getId() + "\n" +
-                    "routeId: " + recommendRoute.toString() + "\n}";
+                    "recommendRoute: " + recommendRoute.toString() + "\n}";
         }
     }
 }

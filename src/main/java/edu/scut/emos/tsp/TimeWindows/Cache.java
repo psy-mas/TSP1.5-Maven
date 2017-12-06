@@ -11,6 +11,7 @@ public class Cache {
     private HashMap<Vehicle, LinkedList<AlgorithmResult>> map;
 
     private LinkedList<String> recomputationOrderIDs;  // 需要重新计算的订单列表
+    private LinkedList<String> noMatchingOrderIDs;     // 没有车辆可匹配的订单列表
 
     public Cache() {
     }
@@ -18,14 +19,25 @@ public class Cache {
     public Cache(LinkedList<AlgorithmResult> algorithmResults) {
         this.algorithmResults = new LinkedList<>();
         this.algorithmResults.addAll(algorithmResults);
-        this.generateMap();
         this.recomputationOrderIDs = new LinkedList<>();
+        this.noMatchingOrderIDs = new LinkedList<>();
+        this.generateMap();
     }
 
     private void generateMap() {
         map = new LinkedHashMap<>();
 
         for (AlgorithmResult algorithmResult : algorithmResults) {
+            // 算法结果数组为空，则不进行之后的计算
+            if (algorithmResult == null) {
+                continue;
+            }
+            // 算法结果推荐路径为空，则说明订单不可插入该车，则将订单存入没有车辆匹配的订单列表中
+            if (algorithmResult.getRecommendRoute() == null) {
+                noMatchingOrderIDs.add(algorithmResult.getOrder().getId());
+                continue;
+            }
+
             LinkedList<AlgorithmResult> algorithmResultList = map.getOrDefault(algorithmResult.getVehicle(), null);
 
             if (algorithmResultList == null) {
@@ -60,6 +72,7 @@ public class Cache {
 
         commitResult.setCacheResults(cacheResults);
         commitResult.setRecomputationOrderIDs(recomputationOrderIDs);
+        commitResult.setNoMatchingOrderIDs(noMatchingOrderIDs);
         return commitResult;
     }
 

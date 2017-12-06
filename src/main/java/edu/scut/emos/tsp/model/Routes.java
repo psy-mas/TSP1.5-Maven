@@ -1,5 +1,6 @@
 package edu.scut.emos.tsp.model;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -52,28 +53,6 @@ public class Routes {
         this.costs = costs;
     }
 
-    @Override
-    public Routes clone() {
-        Routes newRoutes = null;
-
-        newRoutes = new Routes(routes);
-
-        double[] costsTmp = costs == null ? null : costs.clone();
-        newRoutes.setCosts(costsTmp);
-        return newRoutes;
-    }
-
-    @Override
-    public String toString() {
-
-//        String outputString = "the min cost in routes is:";
-//        for (ScheduleTask task : tmp.getPlanTasks()) {
-//            outputString += " " + task.toString();
-//        }
-//        return outputString;
-        return null;
-    }
-
     public LinkedList<Route> getRoutes() {
         return routes;
     }
@@ -81,6 +60,7 @@ public class Routes {
     public void setRoutes(LinkedList<Route> routes) {
         this.routes = routes;
     }
+
 
     /**
      * @param vehicle      待计算成本的车辆对象
@@ -101,4 +81,24 @@ public class Routes {
         }
         return result;
     }
+
+    @Override
+    public Routes clone() {
+        Routes newRoutes = null;
+
+        newRoutes = new Routes(routes);
+
+        double[] costsTmp = costs == null ? null : costs.clone();
+        newRoutes.setCosts(costsTmp);
+        return newRoutes;
+    }
+
+    @Override
+    public String toString() {
+        return "Routes {" +
+                "   routes: " + routes + "\n" +
+                "   costs: " + Arrays.toString(costs) + "\n" +
+                "}\n";
+    }
+
 }
