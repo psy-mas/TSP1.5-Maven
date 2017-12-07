@@ -22,11 +22,12 @@ public class DataGenerate {
         int gap = 1 + (int) (Math.random() * 2);//1-2
 
         TimeWindow[] pdTimeWindow = new TimeWindow[2];
+
        Date now = new Date();
         //获取当前时间的日期
-        int year = now.getYear();
-        int month = now.getMonth();
-        int day = now.getDay();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
         int[] startHours = new int[]{9, 10, 11, 12, 13, 14, 15, 16, 17, 18};//可允许取货时间
         int[] endHours = new int[]{9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};//可允许送货时间
