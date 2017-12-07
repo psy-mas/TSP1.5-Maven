@@ -5,7 +5,6 @@ import edu.scut.emos.tsp.model.Position;
 import edu.scut.emos.tsp.model.Route;
 import edu.scut.emos.tsp.model.Vehicle;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 

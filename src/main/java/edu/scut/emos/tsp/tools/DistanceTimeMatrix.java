@@ -16,29 +16,16 @@ import java.util.HashMap;
 
 public class DistanceTimeMatrix {
 
-    public static void main(String[] args) {
-        //getRouterMatrix(new Position[]{DataGenerate.generateStochasticPosition(),DataGenerate.generateStochasticPosition(),DataGenerate.generateStochasticPosition()},new HashMap<>());
-        for (int i = 0; i < 10; i++) {
-            System.out.println(i);
-            computeDistanceTimeTable(new Position[]{DataGenerate.generateStochasticPosition(), DataGenerate.generateStochasticPosition(), DataGenerate.generateStochasticPosition(), DataGenerate.generateStochasticPosition(), DataGenerate.generateStochasticPosition(), DataGenerate.generateStochasticPosition(), DataGenerate.generateStochasticPosition(), DataGenerate.generateStochasticPosition(), DataGenerate.generateStochasticPosition(), DataGenerate.generateStochasticPosition()});
-            try {
-                Thread.sleep(350);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println(5);
-    }
-
     public static HashMap<DTKey, DTValue> computeDistanceTimeTable(Position[] positionArray) {
-//        Date start = new Date();
 
         HashMap<DTKey, DTValue> dtMap = new HashMap<>();
-        if (positionArray.length <= 50) {
+        int length = positionArray.length;
+        if (length <= 50 && length>=2) {
             getRouterMatrix(positionArray, dtMap);
         } else {
-            //todo
+             throw  new IllegalArgumentException("位置数组超过50或者位置数组长度小于2");
         }
+        return dtMap;
 //        for (int i = 0; i < positionArray.length; i++) {
 //            for (int j = i; j < positionArray.length; j++) {
 //                DTKey key = new DTKey(positionArray[i], positionArray[j]);
@@ -60,30 +47,26 @@ public class DistanceTimeMatrix {
 //        }
 //        Date end = new Date();
 //        System.out.println("api: " + (end.getTime() - start.getTime()));
-        return dtMap;
     }
 
-    public static void getRouterMatrix(Position[] positionArray, HashMap<DTKey, DTValue> dtMap) {
+    private static void getRouterMatrix(Position[] positionArray, HashMap<DTKey, DTValue> dtMap) {
         int length = positionArray.length;
-        Position[] test;
-        if (length <= 50) {
+        Position[] destinationSet = null;
+
             for (int i = 0; i < length - 1; i++) {
                 Position[] tmpPosition = new Position[length - i - 1];
                 int index = 0;
                 for (int j = i + 1; j < length; j++) {
                     tmpPosition[index++] = positionArray[j];
                 }
-                test = tmpPosition;
-                getRouteVector(positionArray[i], test, dtMap);
+                destinationSet = tmpPosition;
+                getRouteVector(positionArray[i], destinationSet, dtMap);
             }
             //if the position is equal,it duration and time is equals to zero;
-            for (int j = 0; j < length; j++) {
-                dtMap.put(new DTKey(positionArray[j], positionArray[j]), new DTValue(0, 0));
+            for (int diagonal = 0; diagonal < length; diagonal++) {
+                dtMap.put(new DTKey(positionArray[diagonal], positionArray[diagonal]), new DTValue(0, 0));
             }
-        } else {
-            //todo
         }
-    }
 
 
 //    public static DTValue getTravelDistance(DTKey positions) {
@@ -126,15 +109,13 @@ public class DistanceTimeMatrix {
 
         if (destinationSet.length > 6) {
             try {
-                Thread.sleep(500);
+                Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
         String json = loadJSON(url);
-//        System.out.println(json);
-
         JSONObject wholeJson = new JSONObject(json);
         JSONArray resultArry = wholeJson.getJSONArray("result");
 
