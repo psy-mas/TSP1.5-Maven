@@ -1,4 +1,4 @@
-package edu.scut.emos.tsp.TimeWindows;
+package edu.scut.emos.tsp.time_windows;
 
 import edu.scut.emos.tsp.core.Solver;
 import edu.scut.emos.tsp.model.AlgorithmResult;
@@ -18,44 +18,54 @@ public class Cache {
 
     public Cache(LinkedList<AlgorithmResult> algorithmResults) {
         this.algorithmResults = new LinkedList<>();
-        this.algorithmResults.addAll(algorithmResults);
+        if (algorithmResults != null) {
+            this.algorithmResults.addAll(algorithmResults);
+        }
+
         this.recomputationOrderIDs = new LinkedList<>();
         this.noMatchingOrderIDs = new LinkedList<>();
-        this.generateMap();
+
+        this.initialMap();
     }
 
-    private void generateMap() {
+    private void initialMap() {
         map = new LinkedHashMap<>();
 
-        for (AlgorithmResult algorithmResult : algorithmResults) {
-            // 算法结果数组为空，则不进行之后的计算
-            if (algorithmResult == null) {
-                continue;
-            }
-            // 算法结果推荐路径为空，则说明订单不可插入该车，则将订单存入没有车辆匹配的订单列表中
-            if (algorithmResult.getRecommendRoute() == null) {
-                noMatchingOrderIDs.add(algorithmResult.getOrder().getId());
-                continue;
-            }
+        if (algorithmResults != null) {
+            for (AlgorithmResult algorithmResult : algorithmResults) {
+                // 算法结果数组为空，则不进行之后的计算
+                if (algorithmResult == null) {
+                    continue;
+                }
+                // 算法结果推荐路径为空，则说明订单不可插入该车，则将订单存入没有车辆匹配的订单列表中
+                if (algorithmResult.getRecommendRoute() == null) {
+                    noMatchingOrderIDs.add(algorithmResult.getOrder().getId());
+                    continue;
+                }
 
-            LinkedList<AlgorithmResult> algorithmResultList = map.getOrDefault(algorithmResult.getVehicle(), null);
+                LinkedList<AlgorithmResult> algorithmResultList = map.getOrDefault(algorithmResult.getVehicle(), null);
 
-            if (algorithmResultList == null) {
-                algorithmResultList = new LinkedList<>();
+                if (algorithmResultList == null) {
+                    algorithmResultList = new LinkedList<>();
+                }
+
+                algorithmResultList.add(algorithmResult);
+                map.put(algorithmResult.getVehicle(), algorithmResultList);
             }
-
-            algorithmResultList.add(algorithmResult);
-            map.put(algorithmResult.getVehicle(), algorithmResultList);
         }
     }
 
+    /**
+     * 根据初始化后的cache类，计算经过对算法结果列表处理后的提交结果
+     *
+     * @return 经过cache层后得到的提交结果
+     */
     public CommitResult commit() {
-        CommitResult commitResult = new CommitResult();
         LinkedList<CacheResult> cacheResults = new LinkedList<>();  // 经过cache类转换过的结果列表
 
         for (Vehicle vehicle : map.keySet()) {
-            LinkedList<AlgorithmResult> arList = map.get(vehicle);
-            LinkedList<String> orderIds = new LinkedList<>();           // 该车所匹配的订单ID
+            LinkedList<AlgorithmResult> arList = map.get(vehicle);      // 该车的所匹配到的算法结果列表
+            LinkedList<String> orderIds = new LinkedList<>();           // 初始化该车经过cache计算后所匹配的订单ID列表
             CacheResult cacheResult = null;
 
             // 该车被多个订单所匹配
@@ -70,6 +80,7 @@ public class Cache {
             cacheResults.add(cacheResult);
         }
 
+        CommitResult commitResult = new CommitResult();
         commitResult.setCacheResults(cacheResults);
         commitResult.setRecomputationOrderIDs(recomputationOrderIDs);
         commitResult.setNoMatchingOrderIDs(noMatchingOrderIDs);
@@ -84,6 +95,9 @@ public class Cache {
      * @return 可以装载在该车辆中的提交结果
      */
     private CacheResult mergeVehicleRoute(Vehicle vehicle, List<AlgorithmResult> results) {
+        if (vehicle == null || results == null || results.size() == 0)
+            return null;
+
         AlgorithmResult[] resultArrays = new AlgorithmResult[results.size()];
         resultArrays = results.toArray(resultArrays);
         Arrays.sort(resultArrays);  // 按result中路径的cost从小到大排序
@@ -96,7 +110,6 @@ public class Cache {
         vehicleTmp.setRoute(resultArrays[0].getRecommendRoute());
 
         for (int i = 1; i < resultArrays.length; i++) {
-            // TODO 可以考虑把调用API的Map计算提出来
             Solver solver = new Solver(vehicleTmp, resultArrays[i].getOrder());
             AlgorithmResult result = solver.getBestResult();
 

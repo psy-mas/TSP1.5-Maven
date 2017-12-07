@@ -69,7 +69,7 @@ public class Routes {
      */
     public Route getMinCostRoute(Vehicle vehicle, HashMap<DTKey, DTValue> positionMaps) {
         this.costs = new double[routes.size()];
-        Route result = new Route();
+        Route result = null;
         double minCost = 1.0;
         for (int i = 0; i < routes.size(); i++) {
             Route route = routes.get(i);

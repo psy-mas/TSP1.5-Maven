@@ -43,8 +43,8 @@ public class AlgorithmResult implements Comparable<AlgorithmResult> {
     public AlgorithmResult clone() {
         Vehicle vehicleTmp = vehicle == null ? null : vehicle.clone();
         Order orderTmp = order == null ? null : order.clone();
-
         Route recommendRouteTmp = recommendRoute == null ? null : recommendRoute;
+
         return new AlgorithmResult(vehicleTmp, orderTmp, recommendRouteTmp);
     }
 

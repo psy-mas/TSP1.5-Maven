@@ -15,18 +15,18 @@ public class RouteTools {
      */
     public static LinkedList<ScheduleTask> loadedTaskInVehicle(List<ScheduleTask> tasks) {
         if (tasks != null) {
-            LinkedList<ScheduleTask> doneTask = new LinkedList<>();
+            LinkedList<ScheduleTask> loadedTask = new LinkedList<>();
             for (ScheduleTask scheduleTask : tasks) {
                 if (scheduleTask.getAction() == 1) {
-                    doneTask.add(scheduleTask);
+                    loadedTask.add(scheduleTask);
                 } else {
-                    int pIndex = getUpIndex(doneTask, scheduleTask.getOrder().getId());
+                    int pIndex = getUpIndex(loadedTask, scheduleTask.getOrder().getId());
                     if (pIndex != -1) {
-                        doneTask.remove(pIndex);
+                        loadedTask.remove(pIndex);
                     }
                 }
             }
-            return doneTask;
+            return loadedTask;
         } else {
             return null;
         }

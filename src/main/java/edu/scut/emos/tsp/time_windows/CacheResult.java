@@ -1,4 +1,4 @@
-package edu.scut.emos.tsp.TimeWindows;
+package edu.scut.emos.tsp.time_windows;
 
 import edu.scut.emos.tsp.model.Route;
 
