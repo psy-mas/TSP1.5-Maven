@@ -38,25 +38,25 @@ public class Route {
     }
 
     public Route(LinkedList<ScheduleTask> doneTasks, LinkedList<ScheduleTask> planTasks) {
-        if (doneTasks != null && planTasks != null) {
+        if (doneTasks != null) {
             // 将已完成的任务列表转，转化为 已装载在车的任务列表
             this.loadedTasks = RouteTools.loadedTaskInVehicle(doneTasks);
+        } else {
+            this.loadedTasks = new LinkedList<>();
+        }
 
+        if (planTasks != null) {
             // 获取计划任务列表的拷贝
             this.planTasks = new LinkedList<>();
             this.planTasks.addAll(planTasks);
-
-            // 获取车辆整个路线列表
-            this.tasks = new LinkedList<>();
-            this.tasks.addAll(this.loadedTasks);
-            this.tasks.addAll(this.planTasks);
         } else {
-            this.loadedTasks = new LinkedList<>();
             this.planTasks = new LinkedList<>();
-            this.tasks = new LinkedList<>();
         }
 
-
+        // 获取车辆整个路线列表
+        this.tasks = new LinkedList<>();
+        this.tasks.addAll(this.loadedTasks);
+        this.tasks.addAll(this.planTasks);
 
         this.cost = 0;
         this.distanceCost = 0;
@@ -138,7 +138,7 @@ public class Route {
                 return this.cost;
             }
 
-            this.drawOutCost = this.computeDrawOutTimeCost(vehicle);
+            this.drawOutCost = this.computeDrawOutTimeCost();
             if (this.drawOutCost == 1) {
                 this.cost = 1;
                 return this.cost;
@@ -183,8 +183,7 @@ public class Route {
                 // 设置新的Map键值
                 one = planTasks.get(i).getAction() == 1 ? planTasks.get(i).getOrder().getPickup() : planTasks.get(i).getOrder().getDelivery();
                 two = planTasks.get(i + 1).getAction() == 1 ? planTasks.get(i + 1).getOrder().getPickup() : planTasks.get(i + 1).getOrder().getDelivery();
-                key.setOne(one);
-                key.setTwo(two);
+                key = new DTKey(one, two);
                 value = positionMaps.getOrDefault(key, null);
 
                 // 距离时间矩阵中没有这两点之间的距离则返回1，或两个任务点距离不能超过预定最大值
@@ -261,8 +260,7 @@ public class Route {
                 // 计算车辆到达下个计划任务点的时间
                 one = planTasks.get(i).getAction() == 1 ? planTasks.get(i).getOrder().getPickup() : planTasks.get(i).getOrder().getDelivery();
                 two = planTasks.get(i + 1).getAction() == 1 ? planTasks.get(i + 1).getOrder().getPickup() : planTasks.get(i + 1).getOrder().getDelivery();
-                key.setOne(one);
-                key.setTwo(two);
+                key = new DTKey(one, two);
                 value = positionMaps.getOrDefault(key, null);
 
                 if (value == null) {
@@ -290,10 +288,9 @@ public class Route {
     /**
      * 计算车辆行驶该路线时掏货的成本
      *
-     * @param vehicle 待计算成本的车辆对象
      * @return 归一化后的掏货成本[0, 1]
      */
-    private double computeDrawOutTimeCost(Vehicle vehicle) {
+    private double computeDrawOutTimeCost() {
         double drawOutTimeCost = 0;
 
         for (int i = 0; i < this.planTasks.size(); i++) {
@@ -324,8 +321,17 @@ public class Route {
         return drawOutTimeCost;
     }
 
+    /**
+     * 返回计划任务列表的复制
+     *
+     * @return 计划任务列表的复制
+     */
     public LinkedList<ScheduleTask> getPlanTasks() {
-        return planTasks;
+        LinkedList<ScheduleTask> newList = new LinkedList<>();
+        if (planTasks != null) {
+            newList.addAll(planTasks);
+        }
+        return newList;
     }
 
     public void setPlanTasks(LinkedList<ScheduleTask> planTasks) {
@@ -336,8 +342,16 @@ public class Route {
         return tasks;
     }
 
+    /**
+     * 返回已装载货物列表的复制
+     * @return 已装载货物列表的复制
+     */
     public LinkedList<ScheduleTask> getLoadedTasks() {
-        return loadedTasks;
+        LinkedList<ScheduleTask> newList = new LinkedList<>();
+        if (loadedTasks != null) {
+            newList.addAll(loadedTasks);
+        }
+        return newList;
     }
 
     public void setLoadedTasks(LinkedList<ScheduleTask> loadedTasks) {
