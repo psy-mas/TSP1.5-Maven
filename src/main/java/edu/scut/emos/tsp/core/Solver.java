@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Solver {
-    // yyyyyyyyy
     private Vehicle vehicle;
     private Order order;
     private Routes routes = new Routes();
