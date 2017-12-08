@@ -12,11 +12,12 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 
 public class DistanceTimeMatrix {
 
-    public static HashMap<DTKey, DTValue> computeDistanceTimeTable(Position[] positionArray) throws NullPointerException, IllegalArgumentException {
+    public static HashMap<DTKey, DTValue> computeDistanceTimeTable(Position[] positionArray) throws IOException, InterruptedException {
         HashMap<DTKey, DTValue> dtMap = new HashMap<>();
         if (positionArray == null)
             throw new NullPointerException("位置数组为空!");
@@ -52,7 +53,7 @@ public class DistanceTimeMatrix {
 //        System.out.println("api: " + (end.getTime() - start.getTime()));
     }
 
-    private static void getRouterMatrix(Position[] positionArray, HashMap<DTKey, DTValue> dtMap) {
+    private static void getRouterMatrix(Position[] positionArray, HashMap<DTKey, DTValue> dtMap) throws IOException, InterruptedException {
         int length = positionArray.length;
         Position[] destinationSet = null;
 
@@ -99,7 +100,7 @@ public class DistanceTimeMatrix {
 //        return new DTValue(distanceValue / 1000.0, durationValue / 3600.0);
 //    }
 
-    private static void getRouteVector(Position originPosition, Position[] destinationSet, HashMap<DTKey, DTValue> dtmap) {
+    private static void getRouteVector(Position originPosition, Position[] destinationSet, HashMap<DTKey, DTValue> dtmap) throws InterruptedException, IOException {
 
         StringBuilder destinationString = new StringBuilder("");
 
@@ -114,24 +115,30 @@ public class DistanceTimeMatrix {
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                throw e;
             }
         }
 
         String json = loadJSON(url);
         JSONObject wholeJson = new JSONObject(json);
-        JSONArray resultArry = wholeJson.getJSONArray("result");
+        String errorReason = wholeJson.getString("message");
+        if (errorReason.equals("成功")) {
+            JSONArray resultArry = wholeJson.getJSONArray("result");
 
-        int index = 0;
-        for (Object jsonObject : resultArry) {
-            double duration = ((JSONObject) jsonObject).getJSONObject("duration").getDouble("value") / 3600.0;
-            double distance = ((JSONObject) jsonObject).getJSONObject("distance").getDouble("value") / 1000.0;
-            dtmap.put(new DTKey(originPosition, destinationSet[index]), new DTValue(distance, duration));
-            index++;
+            int index = 0;
+            for (Object jsonObject : resultArry) {
+                double duration = ((JSONObject) jsonObject).getJSONObject("duration").getDouble("value") / 3600.0;
+                double distance = ((JSONObject) jsonObject).getJSONObject("distance").getDouble("value") / 1000.0;
+                dtmap.put(new DTKey(originPosition, destinationSet[index]), new DTValue(distance, duration));
+                index++;
+            }
+        } else {
+            throw new InvalidParameterException(errorReason);
         }
+
     }
 
-    private static String loadJSON(String url) {
+    private static String loadJSON(String url) throws IOException {
         //处理字符串
         StringBuilder json = new StringBuilder();
         try {
@@ -152,9 +159,9 @@ public class DistanceTimeMatrix {
             }
             in.close();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            throw e;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw e;
         }
         return json.toString();
     }

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Solver {
-
+    // yyyyyyyyy
     private Vehicle vehicle;
     private Order order;
     private Routes routes = new Routes();
@@ -39,7 +39,12 @@ public class Solver {
             positions[i + 3] = taskPosition;
         }
 
-        map = DistanceTimeMatrix.computeDistanceTimeTable(positions);
+        try {
+            map = DistanceTimeMatrix.computeDistanceTimeTable(positions);
+        } catch (Exception e) {
+            // 输出1为
+            System.exit(1);
+        }
     }
 
     private void generateRoutes() {
