@@ -12,21 +12,23 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Date;
 import java.util.HashMap;
 
 public class DistanceTimeMatrix {
 
-    public static HashMap<DTKey, DTValue> computeDistanceTimeTable(Position[] positionArray) {
-        Date start = new Date();
-
+    public static HashMap<DTKey, DTValue> computeDistanceTimeTable(Position[] positionArray) throws NullPointerException, IllegalArgumentException {
         HashMap<DTKey, DTValue> dtMap = new HashMap<>();
-        if (positionArray.length <= 50){
-            getRouterMatrix(positionArray,dtMap);
-            System.out.println(dtMap);
-        }else {
-            //todo
+        if (positionArray == null)
+            throw new NullPointerException("位置数组为空!");
+
+        int length = positionArray.length;
+        if (length <= 50 && length>=2) {
+            getRouterMatrix(positionArray, dtMap);
+            return dtMap;
+        } else {
+             throw  new IllegalArgumentException("位置数组超过50或者位置数组长度小于2");
         }
+
 //        for (int i = 0; i < positionArray.length; i++) {
 //            for (int j = i; j < positionArray.length; j++) {
 //                DTKey key = new DTKey(positionArray[i], positionArray[j]);
@@ -46,54 +48,29 @@ public class DistanceTimeMatrix {
 //                }
 //            }
 //        }
-        Date end = new Date();
-        System.out.println("api: " + (end.getTime() - start.getTime()));
-        return dtMap;
+//        Date end = new Date();
+//        System.out.println("api: " + (end.getTime() - start.getTime()));
     }
-    public static void  getRouterMatrix(Position[] positionArray,HashMap<DTKey,DTValue> dtMap){
+
+    private static void getRouterMatrix(Position[] positionArray, HashMap<DTKey, DTValue> dtMap) {
         int length = positionArray.length;
-        Position[] test;
-        if (length <=50){
-            for (int i = 0; i < length-1; i++) {
-                Position[] tmpPosition = new Position[length -i-1];
+        Position[] destinationSet = null;
+
+            for (int i = 0; i < length - 1; i++) {
+                Position[] tmpPosition = new Position[length - i - 1];
                 int index = 0;
-                for (int j = i+1; j < length; j++) {
+                for (int j = i + 1; j < length; j++) {
                     tmpPosition[index++] = positionArray[j];
                 }
-                test = tmpPosition;
-                getRouteVector(positionArray[i],test,dtMap);
+                destinationSet = tmpPosition;
+                getRouteVector(positionArray[i], destinationSet, dtMap);
             }
             //if the position is equal,it duration and time is equals to zero;
-            for (int j = 0; j< length; j++){
-                dtMap.put(new DTKey(positionArray[j],positionArray[j]),new DTValue(0,0));
+            for (int diagonal = 0; diagonal < length; diagonal++) {
+                dtMap.put(new DTKey(positionArray[diagonal], positionArray[diagonal]), new DTValue(0, 0));
             }
-        }else {
-            //todo
         }
-    }
 
-    private static void getRouteVector(Position originPosition, Position[] distanceSet,HashMap<DTKey,DTValue> dtmap) {
-      
-       StringBuilder destinationString = new StringBuilder("");
-
-        for (int i = 0; i < distanceSet.length ; i++) {
-            destinationString.append(distanceSet[i].toString()+"|");
-        }
-        destinationString.delete(destinationString.length()-1,destinationString.length());
-
-        String url = "http://api.map.baidu.com/routematrix/v2/driving?output=json&origins="+originPosition.toString()+"&destinations="+destinationString+"&ak="+Parameters.AK;
-        String json = loadJSON(url);
-        JSONObject wholeJson = new JSONObject(json);
-        JSONArray resultArry = wholeJson.getJSONArray("result");
-
-        int index = 0;
-        for (Object jsonObject : resultArry){
-            double duration = ((JSONObject) jsonObject).getJSONObject("duration").getDouble("value")/3600.0;
-            double distance = ((JSONObject) jsonObject).getJSONObject("distance").getDouble("value")/1000.0;
-            dtmap.put(new DTKey(originPosition,distanceSet[index]),new DTValue(distance,distance));
-            index++;
-        }
-    }
 
 //    public static DTValue getTravelDistance(DTKey positions) {
 //        Position one = positions.getOne();
@@ -122,6 +99,38 @@ public class DistanceTimeMatrix {
 //        return new DTValue(distanceValue / 1000.0, durationValue / 3600.0);
 //    }
 
+    private static void getRouteVector(Position originPosition, Position[] destinationSet, HashMap<DTKey, DTValue> dtmap) {
+
+        StringBuilder destinationString = new StringBuilder("");
+
+        for (int i = 0; i < destinationSet.length; i++) {
+            destinationString.append(destinationSet[i].toString() + "|");
+        }
+        destinationString.delete(destinationString.length() - 1, destinationString.length());
+
+        String url = "http://api.map.baidu.com/routematrix/v2/driving?output=json&origins=" + originPosition.toString() + "&destinations=" + destinationString + "&ak=" + Parameters.AK;
+
+        if (destinationSet.length > 6) {
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        String json = loadJSON(url);
+        JSONObject wholeJson = new JSONObject(json);
+        JSONArray resultArry = wholeJson.getJSONArray("result");
+
+        int index = 0;
+        for (Object jsonObject : resultArry) {
+            double duration = ((JSONObject) jsonObject).getJSONObject("duration").getDouble("value") / 3600.0;
+            double distance = ((JSONObject) jsonObject).getJSONObject("distance").getDouble("value") / 1000.0;
+            dtmap.put(new DTKey(originPosition, destinationSet[index]), new DTValue(distance, duration));
+            index++;
+        }
+    }
+
     private static String loadJSON(String url) {
         //处理字符串
         StringBuilder json = new StringBuilder();
@@ -148,11 +157,5 @@ public class DistanceTimeMatrix {
             e.printStackTrace();
         }
         return json.toString();
-    }
-
-    public static void main(String[] args) {
-       //getRouterMatrix(new Position[]{DataGenerate.generateStochasticPosition(),DataGenerate.generateStochasticPosition(),DataGenerate.generateStochasticPosition()},new HashMap<>());
-       computeDistanceTimeTable(new Position[]{DataGenerate.generateStochasticPosition(),DataGenerate.generateStochasticPosition(),DataGenerate.generateStochasticPosition()});
-        System.out.println(5);
     }
 }

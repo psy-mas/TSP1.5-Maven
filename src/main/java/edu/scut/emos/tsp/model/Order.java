@@ -4,10 +4,6 @@ import edu.scut.emos.tsp.tools.AddressTranslation;
 
 import java.util.Date;
 
-/**
- * @author emos
- *
- */
 public class Order {
     private String id;
     private Position pickup;
@@ -197,16 +193,16 @@ public class Order {
     @Override
     public String toString() {
         return "Order {" + "\n" +
-                "id: " + id + "\n" +
-                "weight: " + weightOfGoods + "\n" +
-                "volume: " + volumeOfGoods + "\n" +
-                "pickup: " + (pickup == null ? "" : AddressTranslation.addressTranslation(pickup) + " " + pickup.toString()) + "\n" +
-                "pickup early time: " + (earlyTimeOfPickup == null ? "" : earlyTimeOfPickup.toString()) + "\n" +
-                "pickup latest time: " + (latestTimeOfPickup == null ? "" : latestTimeOfPickup.toString()) + "\n" +
-                "pickup service time: " + pickupServiceTime + "\n" +
-                "delivery: " + (delivery == null ? "" : AddressTranslation.addressTranslation(delivery) + " " + delivery.toString()) + "\n" +
-                "delivery early time: " + (earlyTimeOfDelivery == null ? "" : earlyTimeOfDelivery.toString()) + "\n" +
-                "delivery latest time: " + (latestTimeOfDelivery == null ? "" : latestTimeOfDelivery.toString()) + "\n" +
-                "delivery service time: " + deliveryServiceTime + "\n" + "}\n";
+                "   id: " + id + "\n" +
+                "   weight: " + weightOfGoods + "\n" +
+                "   volume: " + volumeOfGoods + "\n" +
+                "   pickup: " + (pickup == null ? "" : AddressTranslation.addressTranslation(pickup) + " " + pickup.toString()) + "\n" +
+                "   pickup early time: " + (earlyTimeOfPickup == null ? "" : earlyTimeOfPickup.toString()) + "\n" +
+                "   pickup latest time: " + (latestTimeOfPickup == null ? "" : latestTimeOfPickup.toString()) + "\n" +
+                "   pickup service time: " + pickupServiceTime + "\n" +
+                "   delivery: " + (delivery == null ? "" : AddressTranslation.addressTranslation(delivery) + " " + delivery.toString()) + "\n" +
+                "   delivery early time: " + (earlyTimeOfDelivery == null ? "" : earlyTimeOfDelivery.toString()) + "\n" +
+                "   delivery latest time: " + (latestTimeOfDelivery == null ? "" : latestTimeOfDelivery.toString()) + "\n" +
+                "   delivery service time: " + deliveryServiceTime + "\n" + "}\n";
     }
 }

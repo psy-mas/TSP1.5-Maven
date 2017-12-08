@@ -15,18 +15,18 @@ public class RouteTools {
      */
     public static LinkedList<ScheduleTask> loadedTaskInVehicle(List<ScheduleTask> tasks) {
         if (tasks != null) {
-            LinkedList<ScheduleTask> doneTask = new LinkedList<>();
+            LinkedList<ScheduleTask> loadedTask = new LinkedList<>();
             for (ScheduleTask scheduleTask : tasks) {
                 if (scheduleTask.getAction() == 1) {
-                    doneTask.add(scheduleTask);
+                    loadedTask.add(scheduleTask);
                 } else {
-                    int pIndex = getUpIndex(doneTask, scheduleTask.getOrder().getId());
+                    int pIndex = getUpIndex(loadedTask, scheduleTask.getOrder().getId());
                     if (pIndex != -1) {
-                        doneTask.remove(pIndex);
+                        loadedTask.remove(pIndex);
                     }
                 }
             }
-            return doneTask;
+            return loadedTask;
         } else {
             return null;
         }
@@ -44,27 +44,6 @@ public class RouteTools {
             for (int i = 0; i < task.size(); i++) {
                 ScheduleTask st = task.get(i);
                 if (st.getOrder().getId().equals(orderId) && st.getAction() == 1) {
-                    return i;
-                }
-            }
-            return -1;
-        } else {
-            return -1;
-        }
-    }
-
-    /**
-     * 根据订单ID，获取任务顺序列表中的送货顺序号
-     *
-     * @param task    车辆的任务列表
-     * @param orderId 订单ID
-     * @return 任务顺序列表中的送货顺序号
-     */
-    public static int getDownIndex(LinkedList<ScheduleTask> task, String orderId) {
-        if (task != null) {
-            for (int i = 0; i < task.size(); i++) {
-                ScheduleTask st = task.get(i);
-                if (st.getOrder().getId().equals(orderId) && st.getAction() == -1) {
                     return i;
                 }
             }

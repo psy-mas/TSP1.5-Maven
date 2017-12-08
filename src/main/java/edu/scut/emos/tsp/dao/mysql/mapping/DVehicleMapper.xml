@@ -1,213 +1,235 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="edu.scut.emos.tsp.dao.mysql.DVehicleMapper" >
-  <resultMap id="BaseResultMap" type="edu.scut.emos.tsp.model.DVehicle" >
-    <id column="vehicleid" property="vehicleid" jdbcType="VARCHAR" />
-    <result column="length" property="length" jdbcType="DOUBLE" />
-    <result column="width" property="width" jdbcType="DOUBLE" />
-    <result column="height" property="height" jdbcType="DOUBLE" />
-    <result column="typeofvehicle" property="typeofvehicle" jdbcType="VARCHAR" />
-    <result column="maxweight" property="maxweight" jdbcType="DOUBLE" />
-    <result column="maxvolume" property="maxvolume" jdbcType="DOUBLE" />
-    <result column="latestlongitude" property="latestlongitude" jdbcType="DOUBLE" />
-    <result column="latestlatitude" property="latestlatitude" jdbcType="DOUBLE" />
-    <result column="gpsuploadtime" property="gpsuploadtime" jdbcType="DATE" />
-    <result column="fuelconsumption" property="fuelconsumption" jdbcType="DOUBLE" />
-    <result column="loadedweight" property="loadedweight" jdbcType="DOUBLE" />
-    <result column="loadedvolume" property="loadedvolume" jdbcType="DOUBLE" />
-    <result column="islocked" property="islocked" jdbcType="TINYINT" />
-    <result column="lastupdatetime" property="lastupdatetime" jdbcType="DATE" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    vehicleid, length, width, height, typeofvehicle, maxweight, maxvolume, latestlongitude, 
-    latestlatitude, gpsuploadtime, fuelconsumption, loadedweight, loadedvolume, islocked, 
-    lastupdatetime
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_vehicle
-    where vehicleid = #{vehicleid,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from t_vehicle
-    where vehicleid = #{vehicleid,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="edu.scut.emos.tsp.model.DVehicle" >
-    insert into t_vehicle (vehicleid, length, width, 
-      height, typeofvehicle, maxweight, 
-      maxvolume, latestlongitude, latestlatitude, 
-      gpsuploadtime, fuelconsumption, loadedweight, 
-      loadedvolume, islocked, lastupdatetime
-      )
-    values (#{vehicleid,jdbcType=VARCHAR}, #{length,jdbcType=DOUBLE}, #{width,jdbcType=DOUBLE}, 
-      #{height,jdbcType=DOUBLE}, #{typeofvehicle,jdbcType=VARCHAR}, #{maxweight,jdbcType=DOUBLE}, 
-      #{maxvolume,jdbcType=DOUBLE}, #{latestlongitude,jdbcType=DOUBLE}, #{latestlatitude,jdbcType=DOUBLE}, 
-      #{gpsuploadtime,jdbcType=DATE}, #{fuelconsumption,jdbcType=DOUBLE}, #{loadedweight,jdbcType=DOUBLE}, 
-      #{loadedvolume,jdbcType=DOUBLE}, #{islocked,jdbcType=TINYINT}, #{lastupdatetime,jdbcType=DATE}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="edu.scut.emos.tsp.model.DVehicle" >
-    insert into t_vehicle
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="vehicleid != null" >
-        vehicleid,
-      </if>
-      <if test="length != null" >
-        length,
-      </if>
-      <if test="width != null" >
-        width,
-      </if>
-      <if test="height != null" >
-        height,
-      </if>
-      <if test="typeofvehicle != null" >
-        typeofvehicle,
-      </if>
-      <if test="maxweight != null" >
-        maxweight,
-      </if>
-      <if test="maxvolume != null" >
-        maxvolume,
-      </if>
-      <if test="latestlongitude != null" >
-        latestlongitude,
-      </if>
-      <if test="latestlatitude != null" >
-        latestlatitude,
-      </if>
-      <if test="gpsuploadtime != null" >
-        gpsuploadtime,
-      </if>
-      <if test="fuelconsumption != null" >
-        fuelconsumption,
-      </if>
-      <if test="loadedweight != null" >
-        loadedweight,
-      </if>
-      <if test="loadedvolume != null" >
-        loadedvolume,
-      </if>
-      <if test="islocked != null" >
-        islocked,
-      </if>
-      <if test="lastupdatetime != null" >
-        lastupdatetime,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="vehicleid != null" >
-        #{vehicleid,jdbcType=VARCHAR},
-      </if>
-      <if test="length != null" >
-        #{length,jdbcType=DOUBLE},
-      </if>
-      <if test="width != null" >
-        #{width,jdbcType=DOUBLE},
-      </if>
-      <if test="height != null" >
-        #{height,jdbcType=DOUBLE},
-      </if>
-      <if test="typeofvehicle != null" >
-        #{typeofvehicle,jdbcType=VARCHAR},
-      </if>
-      <if test="maxweight != null" >
-        #{maxweight,jdbcType=DOUBLE},
-      </if>
-      <if test="maxvolume != null" >
-        #{maxvolume,jdbcType=DOUBLE},
-      </if>
-      <if test="latestlongitude != null" >
-        #{latestlongitude,jdbcType=DOUBLE},
-      </if>
-      <if test="latestlatitude != null" >
-        #{latestlatitude,jdbcType=DOUBLE},
-      </if>
-      <if test="gpsuploadtime != null" >
-        #{gpsuploadtime,jdbcType=DATE},
-      </if>
-      <if test="fuelconsumption != null" >
-        #{fuelconsumption,jdbcType=DOUBLE},
-      </if>
-      <if test="loadedweight != null" >
-        #{loadedweight,jdbcType=DOUBLE},
-      </if>
-      <if test="loadedvolume != null" >
-        #{loadedvolume,jdbcType=DOUBLE},
-      </if>
-      <if test="islocked != null" >
-        #{islocked,jdbcType=TINYINT},
-      </if>
-      <if test="lastupdatetime != null" >
-        #{lastupdatetime,jdbcType=DATE},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.scut.emos.tsp.model.DVehicle" >
-    update t_vehicle
-    <set >
-      <if test="length != null" >
-        length = #{length,jdbcType=DOUBLE},
-      </if>
-      <if test="width != null" >
-        width = #{width,jdbcType=DOUBLE},
-      </if>
-      <if test="height != null" >
-        height = #{height,jdbcType=DOUBLE},
-      </if>
-      <if test="typeofvehicle != null" >
-        typeofvehicle = #{typeofvehicle,jdbcType=VARCHAR},
-      </if>
-      <if test="maxweight != null" >
-        maxweight = #{maxweight,jdbcType=DOUBLE},
-      </if>
-      <if test="maxvolume != null" >
-        maxvolume = #{maxvolume,jdbcType=DOUBLE},
-      </if>
-      <if test="latestlongitude != null" >
-        latestlongitude = #{latestlongitude,jdbcType=DOUBLE},
-      </if>
-      <if test="latestlatitude != null" >
-        latestlatitude = #{latestlatitude,jdbcType=DOUBLE},
-      </if>
-      <if test="gpsuploadtime != null" >
-        gpsuploadtime = #{gpsuploadtime,jdbcType=DATE},
-      </if>
-      <if test="fuelconsumption != null" >
-        fuelconsumption = #{fuelconsumption,jdbcType=DOUBLE},
-      </if>
-      <if test="loadedweight != null" >
-        loadedweight = #{loadedweight,jdbcType=DOUBLE},
-      </if>
-      <if test="loadedvolume != null" >
-        loadedvolume = #{loadedvolume,jdbcType=DOUBLE},
-      </if>
-      <if test="islocked != null" >
-        islocked = #{islocked,jdbcType=TINYINT},
-      </if>
-      <if test="lastupdatetime != null" >
-        lastupdatetime = #{lastupdatetime,jdbcType=DATE},
-      </if>
-    </set>
-    where vehicleid = #{vehicleid,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="edu.scut.emos.tsp.model.DVehicle" >
-    update t_vehicle
-    set length = #{length,jdbcType=DOUBLE},
-      width = #{width,jdbcType=DOUBLE},
-      height = #{height,jdbcType=DOUBLE},
-      typeofvehicle = #{typeofvehicle,jdbcType=VARCHAR},
-      maxweight = #{maxweight,jdbcType=DOUBLE},
-      maxvolume = #{maxvolume,jdbcType=DOUBLE},
-      latestlongitude = #{latestlongitude,jdbcType=DOUBLE},
-      latestlatitude = #{latestlatitude,jdbcType=DOUBLE},
-      gpsuploadtime = #{gpsuploadtime,jdbcType=DATE},
-      fuelconsumption = #{fuelconsumption,jdbcType=DOUBLE},
-      loadedweight = #{loadedweight,jdbcType=DOUBLE},
-      loadedvolume = #{loadedvolume,jdbcType=DOUBLE},
-      islocked = #{islocked,jdbcType=TINYINT},
-      lastupdatetime = #{lastupdatetime,jdbcType=DATE}
-    where vehicleid = #{vehicleid,jdbcType=VARCHAR}
-  </update>
+<mapper namespace="edu.scut.emos.tsp.dao.mysql.DVehicleMapper">
+	<resultMap id="BaseResultMap" type="edu.scut.emos.tsp.model.DVehicle">
+		<id column="vehicleid" property="vehicleid" jdbcType="VARCHAR" />
+		<result column="length" property="length" jdbcType="DOUBLE" />
+		<result column="width" property="width" jdbcType="DOUBLE" />
+		<result column="height" property="height" jdbcType="DOUBLE" />
+		<result column="typeofvehicle" property="typeofvehicle"
+			jdbcType="VARCHAR" />
+		<result column="maxweight" property="maxweight" jdbcType="DOUBLE" />
+		<result column="maxvolume" property="maxvolume" jdbcType="DOUBLE" />
+		<result column="latestlongitude" property="latestlongitude"
+			jdbcType="DOUBLE" />
+		<result column="latestlatitude" property="latestlatitude"
+			jdbcType="DOUBLE" />
+		<result column="gpsuploadtime" property="gpsuploadtime"
+			jdbcType="DATE" />
+		<result column="fuelconsumption" property="fuelconsumption"
+			jdbcType="DOUBLE" />
+		<result column="loadedweight" property="loadedweight" jdbcType="DOUBLE" />
+		<result column="loadedvolume" property="loadedvolume" jdbcType="DOUBLE" />
+		<result column="islocked" property="islocked" jdbcType="TINYINT" />
+		<result column="lastupdatetime" property="lastupdatetime"
+			jdbcType="DATE" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		vehicleid, length, width, height, typeofvehicle, maxweight, maxvolume,
+		latestlongitude,
+		latestlatitude, gpsuploadtime, fuelconsumption, loadedweight, loadedvolume, islocked,
+		lastupdatetime
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_vehicle
+		where vehicleid = #{vehicleid,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from t_vehicle
+		where vehicleid = #{vehicleid,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="edu.scut.emos.tsp.model.DVehicle">
+		insert into t_vehicle (vehicleid, length, width,
+		height, typeofvehicle, maxweight,
+		maxvolume, latestlongitude, latestlatitude,
+		gpsuploadtime, fuelconsumption, loadedweight,
+		loadedvolume, islocked, lastupdatetime
+		)
+		values (#{vehicleid,jdbcType=VARCHAR}, #{length,jdbcType=DOUBLE},
+		#{width,jdbcType=DOUBLE},
+		#{height,jdbcType=DOUBLE}, #{typeofvehicle,jdbcType=VARCHAR}, #{maxweight,jdbcType=DOUBLE},
+		#{maxvolume,jdbcType=DOUBLE}, #{latestlongitude,jdbcType=DOUBLE},
+		#{latestlatitude,jdbcType=DOUBLE},
+		#{gpsuploadtime,jdbcType=DATE}, #{fuelconsumption,jdbcType=DOUBLE}, #{loadedweight,jdbcType=DOUBLE},
+		#{loadedvolume,jdbcType=DOUBLE}, #{islocked,jdbcType=TINYINT},
+		#{lastupdatetime,jdbcType=DATE}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="edu.scut.emos.tsp.model.DVehicle">
+		insert into t_vehicle
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="vehicleid != null">
+				vehicleid,
+			</if>
+			<if test="length != null">
+				length,
+			</if>
+			<if test="width != null">
+				width,
+			</if>
+			<if test="height != null">
+				height,
+			</if>
+			<if test="typeofvehicle != null">
+				typeofvehicle,
+			</if>
+			<if test="maxweight != null">
+				maxweight,
+			</if>
+			<if test="maxvolume != null">
+				maxvolume,
+			</if>
+			<if test="latestlongitude != null">
+				latestlongitude,
+			</if>
+			<if test="latestlatitude != null">
+				latestlatitude,
+			</if>
+			<if test="gpsuploadtime != null">
+				gpsuploadtime,
+			</if>
+			<if test="fuelconsumption != null">
+				fuelconsumption,
+			</if>
+			<if test="loadedweight != null">
+				loadedweight,
+			</if>
+			<if test="loadedvolume != null">
+				loadedvolume,
+			</if>
+			<if test="islocked != null">
+				islocked,
+			</if>
+			<if test="lastupdatetime != null">
+				lastupdatetime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="vehicleid != null">
+				#{vehicleid,jdbcType=VARCHAR},
+			</if>
+			<if test="length != null">
+				#{length,jdbcType=DOUBLE},
+			</if>
+			<if test="width != null">
+				#{width,jdbcType=DOUBLE},
+			</if>
+			<if test="height != null">
+				#{height,jdbcType=DOUBLE},
+			</if>
+			<if test="typeofvehicle != null">
+				#{typeofvehicle,jdbcType=VARCHAR},
+			</if>
+			<if test="maxweight != null">
+				#{maxweight,jdbcType=DOUBLE},
+			</if>
+			<if test="maxvolume != null">
+				#{maxvolume,jdbcType=DOUBLE},
+			</if>
+			<if test="latestlongitude != null">
+				#{latestlongitude,jdbcType=DOUBLE},
+			</if>
+			<if test="latestlatitude != null">
+				#{latestlatitude,jdbcType=DOUBLE},
+			</if>
+			<if test="gpsuploadtime != null">
+				#{gpsuploadtime,jdbcType=DATE},
+			</if>
+			<if test="fuelconsumption != null">
+				#{fuelconsumption,jdbcType=DOUBLE},
+			</if>
+			<if test="loadedweight != null">
+				#{loadedweight,jdbcType=DOUBLE},
+			</if>
+			<if test="loadedvolume != null">
+				#{loadedvolume,jdbcType=DOUBLE},
+			</if>
+			<if test="islocked != null">
+				#{islocked,jdbcType=TINYINT},
+			</if>
+			<if test="lastupdatetime != null">
+				#{lastupdatetime,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="edu.scut.emos.tsp.model.DVehicle">
+		update t_vehicle
+		<set>
+			<if test="length != null">
+				length = #{length,jdbcType=DOUBLE},
+			</if>
+			<if test="width != null">
+				width = #{width,jdbcType=DOUBLE},
+			</if>
+			<if test="height != null">
+				height = #{height,jdbcType=DOUBLE},
+			</if>
+			<if test="typeofvehicle != null">
+				typeofvehicle = #{typeofvehicle,jdbcType=VARCHAR},
+			</if>
+			<if test="maxweight != null">
+				maxweight = #{maxweight,jdbcType=DOUBLE},
+			</if>
+			<if test="maxvolume != null">
+				maxvolume = #{maxvolume,jdbcType=DOUBLE},
+			</if>
+			<if test="latestlongitude != null">
+				latestlongitude = #{latestlongitude,jdbcType=DOUBLE},
+			</if>
+			<if test="latestlatitude != null">
+				latestlatitude = #{latestlatitude,jdbcType=DOUBLE},
+			</if>
+			<if test="gpsuploadtime != null">
+				gpsuploadtime = #{gpsuploadtime,jdbcType=DATE},
+			</if>
+			<if test="fuelconsumption != null">
+				fuelconsumption = #{fuelconsumption,jdbcType=DOUBLE},
+			</if>
+			<if test="loadedweight != null">
+				loadedweight = #{loadedweight,jdbcType=DOUBLE},
+			</if>
+			<if test="loadedvolume != null">
+				loadedvolume = #{loadedvolume,jdbcType=DOUBLE},
+			</if>
+			<if test="islocked != null">
+				islocked = #{islocked,jdbcType=TINYINT},
+			</if>
+			<if test="lastupdatetime != null">
+				lastupdatetime = #{lastupdatetime,jdbcType=DATE},
+			</if>
+		</set>
+		where vehicleid = #{vehicleid,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="edu.scut.emos.tsp.model.DVehicle">
+		update t_vehicle
+		set length = #{length,jdbcType=DOUBLE},
+		width = #{width,jdbcType=DOUBLE},
+		height = #{height,jdbcType=DOUBLE},
+		typeofvehicle = #{typeofvehicle,jdbcType=VARCHAR},
+		maxweight = #{maxweight,jdbcType=DOUBLE},
+		maxvolume = #{maxvolume,jdbcType=DOUBLE},
+		latestlongitude = #{latestlongitude,jdbcType=DOUBLE},
+		latestlatitude = #{latestlatitude,jdbcType=DOUBLE},
+		gpsuploadtime = #{gpsuploadtime,jdbcType=DATE},
+		fuelconsumption = #{fuelconsumption,jdbcType=DOUBLE},
+		loadedweight = #{loadedweight,jdbcType=DOUBLE},
+		loadedvolume = #{loadedvolume,jdbcType=DOUBLE},
+		islocked = #{islocked,jdbcType=TINYINT},
+		lastupdatetime = #{lastupdatetime,jdbcType=DATE}
+		where vehicleid = #{vehicleid,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 添加方法 -->
+	<select id="selectBySquareScope" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_vehicle
+		where latestlongitude &gt;= #{minlongitude,jdbcType=DOUBLE} and
+		latestlongitude &lt;= #{maxlongitude,jdbcType=DOUBLE} and
+		latestlatitude &gt;= #{minlatitude,jdbcType=DOUBLE} and
+		latestlatitude &lt;= #{maxlatitude,jdbcType=DOUBLE}
+	</select>
 </mapper>

@@ -5,6 +5,7 @@ import edu.scut.emos.tsp.model.Position;
 import edu.scut.emos.tsp.model.Route;
 import edu.scut.emos.tsp.model.Vehicle;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class DataGenerate {
@@ -20,11 +21,12 @@ public class DataGenerate {
         int gap = 1 + (int) (Math.random() * 2);//1-2
 
         TimeWindow[] pdTimeWindow = new TimeWindow[2];
+
+       Date now = new Date();
         //获取当前时间的日期
-        Date now = new Date();
-        int year = now.getYear();
-        int month = now.getMonth();
-        int day = now.getDate();
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
         int[] startHours = new int[]{9, 10, 11, 12, 13, 14, 15, 16, 17, 18};//可允许取货时间
         int[] endHours = new int[]{9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};//可允许送货时间
@@ -60,20 +62,28 @@ public class DataGenerate {
         }
 
 
-        pdTimeWindow[0] = new TimeWindow(new Date(year, month, day, pickupStartHour, 0), new Date(year, month, day, pickupEndHour, 0));
-        pdTimeWindow[1] = new TimeWindow(new Date(year, month, day, deliveryStartHour, 0), new Date(year, month, day, deliveryEndHour, 0));
+        Calendar pickupStart = Calendar.getInstance();
+        Calendar picupEnd = Calendar.getInstance();
+        pickupStart.set(year,month,day,pickupStartHour,0);
+        picupEnd.set(year,month,day,pickupEndHour,0);
+        pdTimeWindow[0] = new TimeWindow(pickupStart.getTime(), picupEnd.getTime());
+        Calendar deliveryStart = Calendar.getInstance();
+        Calendar deliveryEnd = Calendar.getInstance();
+        deliveryStart.set(year,month,day,deliveryStartHour,0);
+        deliveryEnd.set(year,month,day,deliveryEndHour,0);
+        pdTimeWindow[1] = new TimeWindow(deliveryStart.getTime(),deliveryEnd.getTime());
 
         return pdTimeWindow;
     }
 
     public static Position generateStochasticPosition() {
 
-        int minLatitude = 22260000;
-        int maxLatitude = 23560000;
-        int randLatitude = minLatitude + (int) (Math.random() * 1299999);
-        int minLongitude = 112570000;
-        int maxLongitude = 114030000;
-        int randLongitude = minLongitude + (int) (Math.random() * 1459999);
+        int minLatitude = 22922741;
+        int maxLatitude = 23214805;
+        int randLatitude = minLatitude + (int) (Math.random() * (maxLatitude - minLatitude));
+        int minLongitude = 113203591;
+        int maxLongitude = 113512321;
+        int randLongitude = minLongitude + (int) (Math.random() * (maxLongitude - minLongitude));
         return new Position((randLatitude / 1000000) + ((randLatitude % 1000000) * 0.000001), (randLongitude / 1000000) + ((randLongitude % 1000000) * 0.000001));
 
     }
@@ -83,10 +93,9 @@ public class DataGenerate {
         int[] weight = new int[]{20, 40, 60};
         int random = (int) (Math.random() * 3);// 生成种子
         int randWeight = weight[random];
-        Date gpsUpdateTime = new Date();
-        gpsUpdateTime.setHours(8);
-        gpsUpdateTime.setMinutes(0);
-        gpsUpdateTime.setSeconds(0);
+        Calendar temp = Calendar.getInstance();
+        temp.set(Calendar.HOUR_OF_DAY,8);
+        Date gpsUpdateTime = temp.getTime();
         return new Vehicle(vehicleId, 10, 4, 3, null, randWeight, 100, generateStochasticPosition(), gpsUpdateTime, 0, null
                 , 0, 0, false, new Route());
     }

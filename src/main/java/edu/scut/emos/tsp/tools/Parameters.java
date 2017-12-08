@@ -2,7 +2,7 @@ package edu.scut.emos.tsp.tools;
 
 public class Parameters {
     // 路线中两个任务点之间的最大距离(公里)
-    public static final double MAX_DISTANCE = 200;
+    public static final double MAX_DISTANCE = 60;
     // 车辆在任务点的等待的最大时间(小时)
     public static final double MAX_WAIT_TIME = 8;
     // 车辆到达任务点延迟的最大时间(小时)
@@ -18,6 +18,4 @@ public class Parameters {
     public static final double MAX_COST = 0.8;
 
     public static final String AK = "xFXLbDh24OBgnGluD8dqgDV2lvbg4pyL";
-//    public static final String AK = "TEFkDzqwAwTgxL9Nf74KHsFrwQhqiIAq";
-
 }

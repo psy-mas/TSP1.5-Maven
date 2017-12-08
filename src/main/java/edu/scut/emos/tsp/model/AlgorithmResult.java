@@ -1,11 +1,5 @@
 package edu.scut.emos.tsp.model;
 
-import org.jetbrains.annotations.NotNull;
-
-/**
- * @author emos
- *
- */
 public class AlgorithmResult implements Comparable<AlgorithmResult> {
 
     private Vehicle vehicle;
@@ -31,7 +25,11 @@ public class AlgorithmResult implements Comparable<AlgorithmResult> {
     }
 
     @Override
-    public int compareTo(@NotNull AlgorithmResult o) {
+    public int compareTo(AlgorithmResult o) {
+        if (o == null) {
+            return -1;
+        }
+
         if (this.recommendRoute.getCost() == o.recommendRoute.getCost()) {
             return 0;
         } else if (this.recommendRoute.getCost() > o.recommendRoute.getCost()) {
@@ -45,7 +43,9 @@ public class AlgorithmResult implements Comparable<AlgorithmResult> {
     public AlgorithmResult clone() {
         Vehicle vehicleTmp = vehicle == null ? null : vehicle.clone();
         Order orderTmp = order == null ? null : order.clone();
-        return new AlgorithmResult(vehicleTmp, orderTmp, recommendRoute.clone());
+        Route recommendRouteTmp = recommendRoute == null ? null : recommendRoute;
+
+        return new AlgorithmResult(vehicleTmp, orderTmp, recommendRouteTmp);
     }
 
     @Override
@@ -53,7 +53,10 @@ public class AlgorithmResult implements Comparable<AlgorithmResult> {
         if (recommendRoute == null) {
             return "订单不可服务";
         } else {
-            return recommendRoute.toString();
+            return "AlgorithmResult: {\n" +
+                    "vehicleId: " + vehicle.getId() + "\n" +
+                    "orderId:" + order.getId() + "\n" +
+                    "recommendRoute: " + recommendRoute.toString() + "\n}";
         }
     }
 }

@@ -4,10 +4,6 @@ import edu.scut.emos.tsp.tools.AddressTranslation;
 
 import java.util.Date;
 
-/**
- * @author emos
- *
- */
 public class Vehicle {
 
     private String id;
@@ -41,7 +37,11 @@ public class Vehicle {
         this.loadedWeight = loadedWeight;
         this.loadedVolume = loadedVolume;
         this.lock = lock;
-        this.route = route;
+        if (route == null) {
+            this.route = new Route();
+        } else {
+            this.route = route;
+        }
     }
 
     public String getId() {
@@ -160,8 +160,9 @@ public class Vehicle {
         return route;
     }
 
-    public void setRoute(Route route) {
-        this.route = route;
+    public static void main(String[] args) {
+        Vehicle vehicle = new Vehicle(null, 0, 0, 0, null, 0, 0, null, null, 0,
+                null, 0, 0, true, null);
     }
 
     @Override
@@ -182,6 +183,11 @@ public class Vehicle {
     }
 
     @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
     public Vehicle clone() {
         Vehicle newVehicle = null;
         Position positionTmp = position == null ? null : position.clone();
@@ -198,11 +204,19 @@ public class Vehicle {
     @Override
     public String toString() {
         return "Vehicle {" + "\n" +
-                "id: " + id + "\n" +
-                "max weight: " + maxWeight + "\n" +
-                "max volume: " + maxVolume + "\n" +
-                "position: " + (position == null ? "" : AddressTranslation.addressTranslation(position) + " " + position.toString()) + "\n" +
-                "gps update time: " + (gpsUpdateTime == null ? "" : gpsUpdateTime.toString()) + "\n" +
-                (route == null ? "no route" : route.toString()) + "}\n";
+                "   id: " + id + "\n" +
+                "   max weight: " + maxWeight + "\n" +
+                "   max volume: " + maxVolume + "\n" +
+                "   position: " + (position == null ? "" : AddressTranslation.addressTranslation(position) + " " + position.toString()) + "\n" +
+                "   gps update time: " + (gpsUpdateTime == null ? "" : gpsUpdateTime.toString()) + "\n" +
+                "   " + (route == null ? "no route" : route.toString()) + "\n}\n";
+    }
+
+    public void setRoute(Route route) {
+        if (route == null) {
+            this.route = new Route();
+        } else {
+            this.route = route;
+        }
     }
 }

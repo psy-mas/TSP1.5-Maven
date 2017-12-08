@@ -14,14 +14,18 @@ public class Solver {
     private Routes routes = new Routes();
     private HashMap<DTKey, DTValue> map;
 
-    public Solver(Vehicle vehicle, Order order) {
+    public Solver(Vehicle vehicle, Order order) throws NullPointerException {
+        if (vehicle == null || order == null) {
+            throw new NullPointerException("车辆与订单不能为空!");
+        }
+
         this.vehicle = vehicle;
         this.order = order;
-        this.generateDTM();
+        this.initialDTMap();
         this.generateRoutes();
     }
 
-    private void generateDTM() {
+    private void initialDTMap() {
         LinkedList<ScheduleTask> planTasks = vehicle.getRoute().getPlanTasks();
         Position[] positions = new Position[planTasks.size() + 3];
 
@@ -58,7 +62,7 @@ public class Solver {
             for (int j = i + 1; j <= tmpList.size(); j++) {
                 tmpList.add(j, deliveryTask);
                 Route route = new Route(loadedTaskList, tmpList);
-                if (route.isInsertFeasible(vehicle, i, j)) {
+                if (route.isInsertFeasible(vehicle)) {
                     routes.add(route);
                 }
                 tmpList.remove(j);
@@ -68,15 +72,11 @@ public class Solver {
     }
 
     public AlgorithmResult getBestResult() {
-        Route bestRoute = getBestRoute();
+        Route bestRoute = routes.getMinCostRoute(vehicle, map);
         if (bestRoute.getCost() > Parameters.MAX_COST) {
             bestRoute = null;
         }
         vehicle.setLock(true);  // 对车状态上锁
         return new AlgorithmResult(vehicle, order, bestRoute);
-    }
-
-    private Route getBestRoute() {
-        return routes.getMinCostRoute(vehicle, map);
     }
 }

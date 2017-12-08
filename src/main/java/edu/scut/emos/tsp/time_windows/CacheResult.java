@@ -1,4 +1,4 @@
-package edu.scut.emos.tsp.TimeWindows;
+package edu.scut.emos.tsp.time_windows;
 
 import edu.scut.emos.tsp.model.Route;
 
@@ -12,14 +12,21 @@ public class CacheResult {
     private Date lastUpdateTime;
 
     public CacheResult() {
+        vehicleId = null;
+        orderIds = new LinkedList<>();
+        recommendRoute = null;
+        lastUpdateTime = null;
     }
 
     public CacheResult(String vehicleId, LinkedList<String> orderIds, Route recommendRoute, Date lastUpdateTime) {
         this.vehicleId = vehicleId;
+
         this.orderIds = new LinkedList<>();
-        this.orderIds.addAll(orderIds);
-        this.recommendRoute = recommendRoute.clone();
-        this.lastUpdateTime = (Date) lastUpdateTime.clone();
+        if (orderIds != null) {
+            this.orderIds.addAll(orderIds);
+        }
+        this.recommendRoute = recommendRoute == null ? null : recommendRoute.clone();
+        this.lastUpdateTime = lastUpdateTime == null ? null : (Date) lastUpdateTime.clone();
     }
 
     public String getVehicleId() {
@@ -35,7 +42,9 @@ public class CacheResult {
     }
 
     public void setOrderIds(LinkedList<String> orderIds) {
-        this.orderIds = orderIds;
+        if (orderIds != null) {
+            this.orderIds.addAll(orderIds);
+        }
     }
 
     public Route getRecommendRoute() {
@@ -43,7 +52,7 @@ public class CacheResult {
     }
 
     public void setRecommendRoute(Route recommendRoute) {
-        this.recommendRoute = recommendRoute;
+        this.recommendRoute = recommendRoute == null ? null : recommendRoute.clone();
     }
 
     public Date getLastUpdateTime() {
@@ -51,6 +60,15 @@ public class CacheResult {
     }
 
     public void setLastUpdateTime(Date lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
+        this.lastUpdateTime = lastUpdateTime == null ? null : (Date) lastUpdateTime.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "CacheResult {\n" +
+                "   vehicleId: " + vehicleId + '\n' +
+                "   orderIds: " + orderIds + "\n" +
+                "   recommendRoute: " + recommendRoute + "\n" +
+                "   lastUpdateTime: " + lastUpdateTime + "\n}";
     }
 }

@@ -9,10 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-/**
- * @author emos
- *
- */
 public class Route {
 
     //已装载列表
@@ -42,12 +38,20 @@ public class Route {
     }
 
     public Route(LinkedList<ScheduleTask> doneTasks, LinkedList<ScheduleTask> planTasks) {
-        // 将已完成的任务列表转，转化为 已装载在车的任务列表
-        this.loadedTasks = RouteTools.loadedTaskInVehicle(doneTasks);
+        if (doneTasks != null) {
+            // 将已完成的任务列表转，转化为 已装载在车的任务列表
+            this.loadedTasks = RouteTools.loadedTaskInVehicle(doneTasks);
+        } else {
+            this.loadedTasks = new LinkedList<>();
+        }
 
-        // 获取计划任务列表的拷贝
-        this.planTasks = new LinkedList<>();
-        this.planTasks.addAll(planTasks);
+        if (planTasks != null) {
+            // 获取计划任务列表的拷贝
+            this.planTasks = new LinkedList<>();
+            this.planTasks.addAll(planTasks);
+        } else {
+            this.planTasks = new LinkedList<>();
+        }
 
         // 获取车辆整个路线列表
         this.tasks = new LinkedList<>();
@@ -74,29 +78,24 @@ public class Route {
      * 计算某个订单插入车辆路线后是否合适
      *
      * @param vehicle 行驶路线的车辆对象
-     * @param pIndex  计划任务列表中插入订单的取货顺序号
-     * @param dIndex  计划任务列表中插入订单的送货顺序号
      * @return 该订单插入是否合适的布尔值
      */
-    public boolean isInsertFeasible(Vehicle vehicle, int pIndex, int dIndex) {
-        if (pIndex < dIndex && pIndex >= 0 && dIndex < this.planTasks.size()) {
-            // 该订单取货之前，车辆所装载的任务
-            LinkedList<ScheduleTask> doneTask = RouteTools.loadedTaskInVehicle(tasks.subList(0, pIndex + this.loadedTasks.size()));
-            double loadedWeight = 0;
-            double loadedVolume = 0;
+    public boolean isInsertFeasible(Vehicle vehicle) {
+        double loadedWeight = 0;
+        double loadedVolume = 0;
+        for (int i = 0; i < tasks.size(); i++) {
+            ScheduleTask scheduleTask = tasks.get(i);
+            double currentWeight = scheduleTask.getAction() == 1 ? scheduleTask.getOrder().getWeightOfGoods() : -scheduleTask.getOrder().getWeightOfGoods();
+            double currentVolume = scheduleTask.getAction() == 1 ? scheduleTask.getOrder().getVolumeOfGoods() : -scheduleTask.getOrder().getVolumeOfGoods();
+            loadedWeight += currentWeight;
+            loadedVolume += currentVolume;
 
-            for (ScheduleTask st : doneTask) {
-                loadedWeight += st.getOrder().getWeightOfGoods();
-                loadedVolume += st.getOrder().getVolumeOfGoods();
+            if (loadedWeight > vehicle.getMaxWeight() || loadedVolume > vehicle.getMaxVolume()) {
+                return false;
             }
-
-            // 车辆的载重和体积可以满足插入订单的需求上货量
-            return loadedWeight + this.planTasks.get(pIndex).getOrder().getWeightOfGoods() <= vehicle.getMaxWeight()
-                    && loadedVolume + this.planTasks.get(pIndex).getOrder().getVolumeOfGoods() <= vehicle.getMaxVolume();
-
-        } else {
-            return false;
         }
+
+        return true;
     }
 
     // 返回计划服务顺序列表中的任务数量
@@ -122,7 +121,7 @@ public class Route {
      * @return 该车辆行驶该路线的成本[0, 1]
      */
     public double getCost(Vehicle vehicle, HashMap<DTKey, DTValue> positionMaps) {
-        Date start = new Date();
+//        Date start = new Date();
 
         if (vehicle != null && positionMaps != null) {
             this.distanceCost = this.computeDistanceCost(vehicle, positionMaps);
@@ -139,7 +138,7 @@ public class Route {
                 return this.cost;
             }
 
-            this.drawOutCost = this.computeDrawOutTimeCost(vehicle);
+            this.drawOutCost = this.computeDrawOutTimeCost();
             if (this.drawOutCost == 1) {
                 this.cost = 1;
                 return this.cost;
@@ -151,8 +150,8 @@ public class Route {
                     + Parameters.DRAW_OUT_TIME_WEIGHT * this.drawOutCost;
         }
 
-        Date end = new Date();
-        System.out.println("cost: " + (end.getTime() - start.getTime()));
+//        Date end = new Date();
+//        System.out.println("cost: " + (end.getTime() - start.getTime()));
         return this.cost;
     }
 
@@ -184,8 +183,7 @@ public class Route {
                 // 设置新的Map键值
                 one = planTasks.get(i).getAction() == 1 ? planTasks.get(i).getOrder().getPickup() : planTasks.get(i).getOrder().getDelivery();
                 two = planTasks.get(i + 1).getAction() == 1 ? planTasks.get(i + 1).getOrder().getPickup() : planTasks.get(i + 1).getOrder().getDelivery();
-                key.setOne(one);
-                key.setTwo(two);
+                key = new DTKey(one, two);
                 value = positionMaps.getOrDefault(key, null);
 
                 // 距离时间矩阵中没有这两点之间的距离则返回1，或两个任务点距离不能超过预定最大值
@@ -262,8 +260,7 @@ public class Route {
                 // 计算车辆到达下个计划任务点的时间
                 one = planTasks.get(i).getAction() == 1 ? planTasks.get(i).getOrder().getPickup() : planTasks.get(i).getOrder().getDelivery();
                 two = planTasks.get(i + 1).getAction() == 1 ? planTasks.get(i + 1).getOrder().getPickup() : planTasks.get(i + 1).getOrder().getDelivery();
-                key.setOne(one);
-                key.setTwo(two);
+                key = new DTKey(one, two);
                 value = positionMaps.getOrDefault(key, null);
 
                 if (value == null) {
@@ -291,10 +288,9 @@ public class Route {
     /**
      * 计算车辆行驶该路线时掏货的成本
      *
-     * @param vehicle 待计算成本的车辆对象
      * @return 归一化后的掏货成本[0, 1]
      */
-    private double computeDrawOutTimeCost(Vehicle vehicle) {
+    private double computeDrawOutTimeCost() {
         double drawOutTimeCost = 0;
 
         for (int i = 0; i < this.planTasks.size(); i++) {
@@ -325,24 +321,41 @@ public class Route {
         return drawOutTimeCost;
     }
 
+    /**
+     * 返回计划任务列表的复制
+     *
+     * @return 计划任务列表的复制
+     */
     public LinkedList<ScheduleTask> getPlanTasks() {
-        return planTasks;
+        LinkedList<ScheduleTask> newList = new LinkedList<>();
+        if (planTasks != null) {
+            newList.addAll(planTasks);
+        }
+        return newList;
+    }
+
+    public void setPlanTasks(LinkedList<ScheduleTask> planTasks) {
+        this.planTasks = planTasks;
     }
 
     public LinkedList<ScheduleTask> getTasks() {
         return tasks;
     }
 
+    /**
+     * 返回已装载货物列表的复制
+     * @return 已装载货物列表的复制
+     */
     public LinkedList<ScheduleTask> getLoadedTasks() {
-        return loadedTasks;
+        LinkedList<ScheduleTask> newList = new LinkedList<>();
+        if (loadedTasks != null) {
+            newList.addAll(loadedTasks);
+        }
+        return newList;
     }
 
     public void setLoadedTasks(LinkedList<ScheduleTask> loadedTasks) {
         this.loadedTasks = loadedTasks;
-    }
-
-    public void setPlanTasks(LinkedList<ScheduleTask> planTasks) {
-        this.planTasks = planTasks;
     }
 
     public ScheduleTask getTaskByIndex(int index) {
@@ -402,24 +415,22 @@ public class Route {
 
     @Override
     public String toString() {
-        String tmp = "";
+        String tmp = "Route {";
         tmp += "loaded tasks: ";
         for (ScheduleTask scheduleTask : loadedTasks) {
             tmp += " " + scheduleTask.toString();
         }
-        tmp += "\n";
 
-        tmp += "plan tasks: ";
+        tmp += ", plan tasks: ";
         for (ScheduleTask scheduleTask : planTasks) {
             tmp += " " + scheduleTask.toString();
         }
-        tmp += "\n";
 
-        tmp += "cost: " + this.cost + "\n" +
-                "distance cost: " + this.distanceCost + "\n" +
-                "wait time cost: " + this.waitTimeCost + "\n" +
-                "delay time cost: " + this.delayTimeCost + "\n" +
-                "draw out cost: " + this.drawOutCost + "\n";
+        tmp += ", cost: " + this.cost +
+                ", distance cost: " + this.distanceCost +
+                ", wait time cost: " + this.waitTimeCost +
+                ", delay time cost: " + this.delayTimeCost +
+                ", draw out cost: " + this.drawOutCost + "}";
         return tmp;
     }
 }

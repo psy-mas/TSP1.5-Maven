@@ -25,7 +25,8 @@ public class AddressTranslation {
         JSONObject resulObject = jb.getJSONObject("result");
         String addressObject = resulObject.getString("formatted_address");
 
-        return addressObject;
+        return addressObject==null?null:addressObject;
+
     }
 
     private static String loadJSON(String url) {

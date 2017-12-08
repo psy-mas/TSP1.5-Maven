@@ -23,5 +23,5 @@ public interface DOrderMapper {
     
     // 添加方法
     
-    List<DOrder> selectAllByOrderids(List<String> orderids);
+    List<DOrder> selectByOrderids(List<String> orderids);
 }

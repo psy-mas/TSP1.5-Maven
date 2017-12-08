@@ -6,8 +6,8 @@ package edu.scut.emos.tsp.dao.mysql.format;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.scut.emos.tsp.TimeWindows.CacheResult;
 import edu.scut.emos.tsp.model.DWindowCacheResultOrder;
+import edu.scut.emos.tsp.time_windows.CacheResult;
 import edu.scut.emos.tsp.utils.UUIDGenerator;
 
 public class _2DWindowCacheResultOrder {

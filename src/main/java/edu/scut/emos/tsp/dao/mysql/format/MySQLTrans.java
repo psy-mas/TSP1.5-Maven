@@ -10,9 +10,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.scut.emos.tsp.TimeWindows.CacheResult;
-import edu.scut.emos.tsp.TimeWindows.CommitResult;
 import edu.scut.emos.tsp.dao.mysql.DOrderMapper;
+import edu.scut.emos.tsp.dao.mysql.DVehicleMapper;
 import edu.scut.emos.tsp.dao.mysql.DWindowCacheResultMapper;
 import edu.scut.emos.tsp.dao.mysql.DWindowCacheResultOrderMapper;
 import edu.scut.emos.tsp.dao.mysql.DWindowCacheResultRouteMapper;
@@ -20,12 +19,15 @@ import edu.scut.emos.tsp.dao.mysql.DWindowCommitCacheResultMapper;
 import edu.scut.emos.tsp.dao.mysql.DWindowCommitRecomputationOrderMapper;
 import edu.scut.emos.tsp.dao.mysql.DWindowCommitResultMapper;
 import edu.scut.emos.tsp.model.DOrder;
+import edu.scut.emos.tsp.model.DVehicle;
 import edu.scut.emos.tsp.model.DWindowCacheResult;
 import edu.scut.emos.tsp.model.DWindowCacheResultOrder;
 import edu.scut.emos.tsp.model.DWindowCacheResultRoute;
 import edu.scut.emos.tsp.model.DWindowCommitCacheResult;
 import edu.scut.emos.tsp.model.DWindowCommitRecomputationOrder;
 import edu.scut.emos.tsp.model.DWindowCommitResult;
+import edu.scut.emos.tsp.time_windows.CacheResult;
+import edu.scut.emos.tsp.time_windows.CommitResult;
 import edu.scut.emos.tsp.utils.MybatisSqlSession;
 import edu.scut.emos.tsp.utils.UUIDGenerator;
 
@@ -116,7 +118,7 @@ public class MySQLTrans {
 	}
 	
 	/**
-	 * 根据orderid查询t_order表中条目
+	 * 根据orderid查询t_order表中订单
 	 * 
 	 * @param orderid
 	 * @return
@@ -134,17 +136,38 @@ public class MySQLTrans {
 	}
 	
 	/**
-	 * 根据一批orderid查询t_order表中一批条目
+	 * 根据一批orderid查询t_order表中一批订单
 	 * 
 	 * @param orderids
 	 * @return
 	 */
-	public List<DOrder> dOrderSelectAllByOrderids(List<String> orderids) {
+	public List<DOrder> dOrderSelectByOrderids(List<String> orderids) {
 		SqlSession sqlSession = null;
 		try {
 			sqlSession = MybatisSqlSession.openSession();
 			DOrderMapper dOrderMapper = sqlSession.getMapper(DOrderMapper.class);
-			return dOrderMapper.selectAllByOrderids(orderids);
+			return dOrderMapper.selectByOrderids(orderids);
+		}finally {
+			if(sqlSession != null)
+				sqlSession.close();
+		}
+	}
+	
+	/**
+	 * 根据最小/最大经纬度获取一批车辆
+	 * 
+	 * @param minlongitude
+	 * @param maxlongitude
+	 * @param minlatitude
+	 * @param maxlatitude
+	 * @return
+	 */
+	public List<DVehicle> dVehicleSelectBySquareScope(double minlongitude, double maxlongitude, double minlatitude, double maxlatitude) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = MybatisSqlSession.openSession();
+			DVehicleMapper dVehicleMapper = sqlSession.getMapper(DVehicleMapper.class);
+			return dVehicleMapper.selectBySquareScope(minlongitude, maxlongitude, minlatitude, maxlatitude);
 		}finally {
 			if(sqlSession != null)
 				sqlSession.close();

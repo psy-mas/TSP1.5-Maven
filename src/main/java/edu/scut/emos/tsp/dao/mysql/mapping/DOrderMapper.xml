@@ -289,7 +289,7 @@
 	</update>
 
 	<!-- 添加方法 -->
-	<select id="selectAllByOrderids" resultMap="BaseResultMap"
+	<select id="selectByOrderids" resultMap="BaseResultMap"
 		parameterType="java.util.List">
 		select
 		<include refid="Base_Column_List" />

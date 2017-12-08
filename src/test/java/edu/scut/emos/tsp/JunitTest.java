@@ -24,10 +24,7 @@ public class JunitTest {
 	public void test1() {
 		System.out.println("this is test1");
 		
-		byte a;
-		boolean b = true;
-		a = (byte) (b ? 1 : 0);
-		System.out.println(a);
+		System.out.println(ClassLoader.getSystemResource(""));
 	}
 	
 	@Test

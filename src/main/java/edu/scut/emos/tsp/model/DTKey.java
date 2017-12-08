@@ -1,10 +1,6 @@
 package edu.scut.emos.tsp.model;
 
-/**
- * @author emos
- *
- */
-public class DTKey {
+public final class DTKey {
     private Position one;
     private Position two;
 
@@ -17,29 +13,15 @@ public class DTKey {
         return one;
     }
 
-    public void setOne(Position one) {
-        this.one = one;
-    }
-
     public Position getTwo() {
         return two;
     }
 
-    public void setTwo(Position two) {
-        this.two = two;
-    }
-
-    /**
-     * 返回将DTKey的两个位置元素转置
-     *
-     * @return 转置后的新的DTKey
-     */
-    public DTKey revert() {
-        return new DTKey(this.two, this.one);
-    }
-
     @Override
     public int hashCode() {
+        if (this.one == null || this.two == null) {
+            return 0;
+        }
         return this.one.hashCode() + this.two.hashCode();
     }
 
@@ -50,6 +32,19 @@ public class DTKey {
 
         DTKey that = (DTKey) o;
 
-        return that.one.equals(this.one) && that.two.equals(this.two);
+        // 两个地址都不能为空
+        if (this.one == null || this.two == null || that.one == null || that.two == null)
+            return false;
+
+        return that.one.equals(this.one) && that.two.equals(this.two) ||
+                that.one.equals(this.two) && that.two.equals(this.one);
+    }
+
+    @Override
+    public String toString() {
+        return "DTKey{" +
+                "one=" + one +
+                ", two=" + two +
+                '}';
     }
 }

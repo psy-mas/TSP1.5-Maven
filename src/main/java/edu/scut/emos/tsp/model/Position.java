@@ -1,13 +1,10 @@
 package edu.scut.emos.tsp.model;
 
-/**
- * @author emos
- *
- */
-public class Position {
+public final class Position {
     //定义经纬度信息
     private double latitude;
     private double longitude;
+
 
     public Position(double latitude, double longitude) {
         super();
@@ -21,18 +18,13 @@ public class Position {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj != null) {
-            Position other = (Position) obj;
-            return this.latitude == other.latitude && this.longitude == other.longitude;
-        } else {
-            return false;
-        }
-    }
+    public boolean equals(Object o) {
+        if (this == o) return true;
 
-    @Override
-    public String toString() {
-        return String.valueOf(this.latitude) + "," + String.valueOf(this.longitude);
+        Position position = (Position) o;
+
+        if (Double.compare(position.latitude, latitude) != 0) return false;
+        return Double.compare(position.longitude, longitude) == 0;
     }
 
     @Override
@@ -42,19 +34,9 @@ public class Position {
         return newPosition;
     }
 
-	public double getLatitude() {
-		return latitude;
-	}
 
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
+    @Override
+    public String toString() {
+        return String.valueOf(this.latitude) + "," + String.valueOf(this.longitude);
+    }
 }

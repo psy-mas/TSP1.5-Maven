@@ -1,11 +1,11 @@
 package edu.scut.emos.tsp.model;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- * @author emos
- *
+ * @author yichen
  */
 public class Routes {
 
@@ -45,16 +45,41 @@ public class Routes {
         return routes.size();
     }
 
-    public void setRoutes(LinkedList<Route> routes) {
-        this.routes = routes;
-    }
-
     public double[] getCosts() {
         return costs;
     }
 
     public void setCosts(double[] costs) {
         this.costs = costs;
+    }
+
+    public LinkedList<Route> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(LinkedList<Route> routes) {
+        this.routes = routes;
+    }
+
+
+    /**
+     * @param vehicle      待计算成本的车辆对象
+     * @param positionMaps 存储两个位置之间距离和时间的映射
+     * @return 返回routes列表中代价值最小的路径，如果有两种代价一样的路径，则返回相同代价中位置靠后的那条路径
+     */
+    public Route getMinCostRoute(Vehicle vehicle, HashMap<DTKey, DTValue> positionMaps) {
+        this.costs = new double[routes.size()];
+        Route result = null;
+        double minCost = 1.0;
+        for (int i = 0; i < routes.size(); i++) {
+            Route route = routes.get(i);
+            costs[i] = route.getCost(vehicle, positionMaps);
+            if (costs[i] <= minCost) {
+                minCost = costs[i];
+                result = route;
+            }
+        }
+        return result;
     }
 
     @Override
@@ -68,39 +93,12 @@ public class Routes {
         return newRoutes;
     }
 
-    public LinkedList<Route> getRoutes() {
-        return routes;
-    }
-
     @Override
     public String toString() {
-
-//        String outputString = "the min cost in routes is:";
-//        for (ScheduleTask task : tmp.getPlanTasks()) {
-//            outputString += " " + task.toString();
-//        }
-//        return outputString;
-        return null;
+        return "Routes {" +
+                "   routes: " + routes + "\n" +
+                "   costs: " + Arrays.toString(costs) + "\n" +
+                "}\n";
     }
 
-    /**
-     *
-     * @param vehicle 待计算成本的车辆对象
-     * @param positionMaps 存储两个位置之间距离和时间的映射
-     * @return 返回routes列表中代价值最小的路径，如果有两种代价一样的路径，则返回相同代价中位置靠后的那条路径
-     */
-    public Route getMinCostRoute(Vehicle vehicle, HashMap<DTKey, DTValue> positionMaps) {
-        this.costs = new double[routes.size()];
-        Route result = new Route();
-        double minCost = 1.0;
-        for (int i = 0; i < routes.size(); i++) {
-            Route route = routes.get(i);
-            costs[i] = route.getCost(vehicle, positionMaps);
-            if (costs[i] <= minCost) {
-                minCost = costs[i];
-                result = route;
-            }
-        }
-        return result;
-    }
 }
