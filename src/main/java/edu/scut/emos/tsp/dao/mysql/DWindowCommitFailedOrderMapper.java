@@ -1,5 +1,7 @@
 package edu.scut.emos.tsp.dao.mysql;
 
+import java.util.List;
+
 import edu.scut.emos.tsp.model.DWindowCommitFailedOrder;
 
 public interface DWindowCommitFailedOrderMapper {
@@ -14,4 +16,8 @@ public interface DWindowCommitFailedOrderMapper {
     int updateByPrimaryKeySelective(DWindowCommitFailedOrder record);
 
     int updateByPrimaryKey(DWindowCommitFailedOrder record);
+
+    // 添加方法
+    
+	int insertAll(List<DWindowCommitFailedOrder> dWindowCommitFailedOrders);
 }

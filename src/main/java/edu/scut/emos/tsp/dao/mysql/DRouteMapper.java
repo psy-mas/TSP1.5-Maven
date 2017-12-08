@@ -1,5 +1,7 @@
 package edu.scut.emos.tsp.dao.mysql;
 
+import java.util.List;
+
 import edu.scut.emos.tsp.model.DRoute;
 
 /**
@@ -18,4 +20,8 @@ public interface DRouteMapper {
     int updateByPrimaryKeySelective(DRoute record);
 
     int updateByPrimaryKey(DRoute record);
+    
+    // 添加方法
+    
+    List<DRoute> selectByVehicleid(String vehicleid);
 }

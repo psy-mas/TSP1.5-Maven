@@ -9,20 +9,20 @@
     <result column="isloaded" property="isloaded" jdbcType="TINYINT" />
     <result column="sequence" property="sequence" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     routeid, vehicleid, routeorderid, action, isloaded, sequence
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
     select 
     <include refid="Base_Column_List" />
     from t_route
     where routeid = #{routeid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_route
     where routeid = #{routeid,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="edu.scut.emos.tsp.model.DRoute" >
+  <insert id="insert" parameterType="edu.scut.emos.tsp.model.DRoute">
     insert into t_route (routeid, vehicleid, routeorderid, 
       action, isloaded, sequence
       )
@@ -30,7 +30,7 @@
       #{action,jdbcType=TINYINT}, #{isloaded,jdbcType=TINYINT}, #{sequence,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="edu.scut.emos.tsp.model.DRoute" >
+  <insert id="insertSelective" parameterType="edu.scut.emos.tsp.model.DRoute">
     insert into t_route
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="routeid != null" >
@@ -52,7 +52,7 @@
         sequence,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="routeid != null" >
         #{routeid,jdbcType=VARCHAR},
       </if>
@@ -73,7 +73,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.scut.emos.tsp.model.DRoute" >
+  <update id="updateByPrimaryKeySelective" parameterType="edu.scut.emos.tsp.model.DRoute">
     update t_route
     <set >
       <if test="vehicleid != null" >
@@ -94,7 +94,7 @@
     </set>
     where routeid = #{routeid,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="edu.scut.emos.tsp.model.DRoute" >
+  <update id="updateByPrimaryKey" parameterType="edu.scut.emos.tsp.model.DRoute">
     update t_route
     set vehicleid = #{vehicleid,jdbcType=VARCHAR},
       routeorderid = #{routeorderid,jdbcType=VARCHAR},
@@ -103,4 +103,12 @@
       sequence = #{sequence,jdbcType=INTEGER}
     where routeid = #{routeid,jdbcType=VARCHAR}
   </update>
+  
+  <!-- 添加方法 -->
+  <select id="selectByVehicleid" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_vehicle
+		where vehicleid = #{vehicleid,jdbcType=VARCHAR}
+	</select>
 </mapper>

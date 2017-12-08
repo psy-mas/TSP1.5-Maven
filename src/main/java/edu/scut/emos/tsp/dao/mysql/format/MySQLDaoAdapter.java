@@ -1,14 +1,18 @@
 package edu.scut.emos.tsp.dao.mysql.format;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.scut.emos.tsp.model.DOrder;
+import edu.scut.emos.tsp.model.DRoute;
+import edu.scut.emos.tsp.model.DVehicle;
 import edu.scut.emos.tsp.model.Position;
 import edu.scut.emos.tsp.model.Vehicle;
 import edu.scut.emos.tsp.time_windows.CommitResult;
+import edu.scut.emos.tsp.utils.PropertiesUtil;
 
 /**
  * 完成MySQL DAO层适配工作
@@ -42,18 +46,40 @@ public class MySQLDaoAdapter {
 	}
 	
 	public static List<Vehicle> getVehicle(Position orderPosition, String type) {
-		double orderLongtitude = orderPosition.getLongitude();
+		double orderLongitude = orderPosition.getLongitude();
 		double orderLatitude = orderPosition.getLatitude();
+		
+		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		
 		switch (type) {
 		case "square" :
-			double minLongtitude, maxLongtitude, minLatitude, maxLatitude;
-			
+			double minLongitude, maxLongitude, minLatitude, maxLatitude;
+			double temp;
+			temp = orderLongitude - (PropertiesUtil.vehicleScope() / (111.0 * Math.cos(orderLatitude)));
+			minLongitude = temp > 0 ? temp : 0;
+			temp = orderLongitude + (PropertiesUtil.vehicleScope() / (111.0 * Math.cos(orderLatitude)));
+			maxLongitude = temp < 180 ? temp : 180;
+			temp = orderLatitude - (PropertiesUtil.vehicleScope() / (111.0));
+			minLatitude = temp > 0 ? temp : 0;
+			temp = orderLatitude + (PropertiesUtil.vehicleScope() / (111.0));
+			maxLatitude = temp < 90 ? temp : 90;
+			// 获取一批DVehicle
+			List<DVehicle> dVehicles = mySQLTrans.dVehicleSelectBySquareScope(minLongitude, maxLongitude, minLatitude, maxLatitude);
+			// 构造Vehicle
+			Vehicle vehicle;
+			for(DVehicle dVehicle : dVehicles) {
+				List<DRoute> dRoutes = mySQLTrans.dRouteSelectByVehicleid(dVehicle.getVehicleid());
+				vehicle = _2Vehicle.a(dVehicle, dRoutes);
+				vehicles.add(vehicle);
+			}
 			break;
 		case "circle" :
+			// TODO circle方法待完成
 			break;
 		default :
 			break;
 		}
+		
+		return vehicles;
 	}
 }

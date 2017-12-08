@@ -11,20 +11,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.scut.emos.tsp.dao.mysql.DOrderMapper;
+import edu.scut.emos.tsp.dao.mysql.DRouteMapper;
 import edu.scut.emos.tsp.dao.mysql.DVehicleMapper;
 import edu.scut.emos.tsp.dao.mysql.DWindowCacheResultMapper;
 import edu.scut.emos.tsp.dao.mysql.DWindowCacheResultOrderMapper;
 import edu.scut.emos.tsp.dao.mysql.DWindowCacheResultRouteMapper;
 import edu.scut.emos.tsp.dao.mysql.DWindowCommitCacheResultMapper;
-import edu.scut.emos.tsp.dao.mysql.DWindowCommitRecomputationOrderMapper;
+import edu.scut.emos.tsp.dao.mysql.DWindowCommitFailedOrderMapper;
 import edu.scut.emos.tsp.dao.mysql.DWindowCommitResultMapper;
 import edu.scut.emos.tsp.model.DOrder;
+import edu.scut.emos.tsp.model.DRoute;
 import edu.scut.emos.tsp.model.DVehicle;
 import edu.scut.emos.tsp.model.DWindowCacheResult;
 import edu.scut.emos.tsp.model.DWindowCacheResultOrder;
 import edu.scut.emos.tsp.model.DWindowCacheResultRoute;
 import edu.scut.emos.tsp.model.DWindowCommitCacheResult;
-import edu.scut.emos.tsp.model.DWindowCommitRecomputationOrder;
+import edu.scut.emos.tsp.model.DWindowCommitFailedOrder;
 import edu.scut.emos.tsp.model.DWindowCommitResult;
 import edu.scut.emos.tsp.time_windows.CacheResult;
 import edu.scut.emos.tsp.time_windows.CommitResult;
@@ -72,9 +74,9 @@ public class MySQLTrans {
 			dWindowCommitCacheResultMapper.insertAll(dWindowCommitCacheResults);
 			
 			// DWindowCommitRecomputationOrder
-			List<DWindowCommitRecomputationOrder> dWindowCommitRecomputationOrders = _2DWindowCommitRecomputationOrder.a(commitResult, dWindowCommitResult.getCommitresultid());
-			DWindowCommitRecomputationOrderMapper dWindowCommitRecomputationOrderMapper = sqlSession.getMapper(DWindowCommitRecomputationOrderMapper.class);
-			dWindowCommitRecomputationOrderMapper.insertAll(dWindowCommitRecomputationOrders);
+			List<DWindowCommitFailedOrder> dWindowCommitFailedOrders = _2DWindowCommitFailedOrder.a(commitResult, dWindowCommitResult.getCommitresultid());
+			DWindowCommitFailedOrderMapper dWindowCommitFailedOrderMapper = sqlSession.getMapper(DWindowCommitFailedOrderMapper.class);
+			dWindowCommitFailedOrderMapper.insertAll(dWindowCommitFailedOrders);
 			
 			// DWindowCacheResult
 			List<DWindowCacheResult> dWindowCacheResults = new ArrayList<DWindowCacheResult>();
@@ -168,6 +170,24 @@ public class MySQLTrans {
 			sqlSession = MybatisSqlSession.openSession();
 			DVehicleMapper dVehicleMapper = sqlSession.getMapper(DVehicleMapper.class);
 			return dVehicleMapper.selectBySquareScope(minlongitude, maxlongitude, minlatitude, maxlatitude);
+		}finally {
+			if(sqlSession != null)
+				sqlSession.close();
+		}
+	}
+	
+	/**
+	 * 根据车辆ID号获取一批路径
+	 * 
+	 * @param vehicleid
+	 * @return
+	 */
+	public List<DRoute> dRouteSelectByVehicleid(String vehicleid) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = MybatisSqlSession.openSession();
+			DRouteMapper dRouteMapper = sqlSession.getMapper(DRouteMapper.class);
+			return dRouteMapper.selectByVehicleid(vehicleid);
 		}finally {
 			if(sqlSession != null)
 				sqlSession.close();
