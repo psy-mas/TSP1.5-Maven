@@ -43,7 +43,7 @@ public class _2Vehicle {
 
 		// 查询order
 		Map<String, Order> dOrdermap = new HashMap<String, Order>();
-		List<DOrder> dOrders = MySQLDaoAdapter.dOrderSelectAllByOrderids(dRouteorderids);
+		List<DOrder> dOrders = MySQLDaoAdapter.getOrders(dRouteorderids);
 		if (dOrders == null) {
 			// 查询不到order数据
 		}
