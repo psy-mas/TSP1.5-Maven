@@ -5,9 +5,6 @@ import java.util.Date;
 public class TimeCompare {
 
     public static double earlyTimeSubArriveTime(Date early, Date arrive) {
-        System.out.println("hello");
-        System.out.println("word");
-        System.out.println("word");
         return (double) (early.getTime() - arrive.getTime()) / (1000.0 * 3600.0);
     }
 
