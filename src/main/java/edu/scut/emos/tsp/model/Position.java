@@ -1,7 +1,8 @@
 package edu.scut.emos.tsp.model;
 
 public final class Position {
-    //定义经纬度信息
+
+	//定义经纬度信息
     private double latitude;
     private double longitude;
 
@@ -39,4 +40,20 @@ public final class Position {
     public String toString() {
         return String.valueOf(this.latitude) + "," + String.valueOf(this.longitude);
     }
+    
+    public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
 }

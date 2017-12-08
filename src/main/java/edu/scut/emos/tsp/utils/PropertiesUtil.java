@@ -19,9 +19,9 @@ public class PropertiesUtil {
 
 	private static final Logger LOG = LoggerFactory.getLogger(PropertiesUtil.class);
 	
-	private static final String URL_HDFS_PROPERTIES = "hdfs://";
+	private static String hdfsPropertiesUrl = "";
 	private static FileSystem hdfs = null;
-	private static Path hdfsPropertiesPath = new Path(URL_HDFS_PROPERTIES);
+	private static Path hdfsPropertiesPath = null;
 	private static long hdfsPropertiesModifiedTime = 0L;
 	
 	private static Properties prop = new Properties();
@@ -89,7 +89,24 @@ public class PropertiesUtil {
 	 * @throws IOException
 	 */
 	private static void setPropertiesFile() throws IOException {
-		// 若HDFS上的Properties文件存在，则获取
+		// 读取本地配置文件
+		InputStream localis = ClassLoader.getSystemResourceAsStream("tsp.properties");
+		prop.load(localis);
+		
+		// 若本地配置文件配置使用HDFS配置文件则获取HDFS配置文件，否则退出
+		if(!useHdfsProperties()) {
+			return;
+		}
+		
+		// 初始化HDFS路径
+		hdfsPropertiesUrl = hdfsPropertiesUrl();
+		// 防止URL出错
+		if(hdfsPropertiesUrl == null || hdfsPropertiesUrl.equals("")) {
+			return ;
+		}
+		hdfsPropertiesPath = new Path(hdfsPropertiesUrl);
+		
+		// 若HDFS上的配置文件存在，则获取
 		if(isUrlHdfsPropertiesExist()) {
 			if(isUrlHdfsPropertiesModified()) {
 				getUrlHdfsProperties();
@@ -97,9 +114,7 @@ public class PropertiesUtil {
 			return ;
 		}
 
-		// 读取本地Properties文件
-		InputStream localis = ClassLoader.getSystemResourceAsStream("tsp.properties");
-		prop.load(localis);
+		
 	}
 	
 	/**
@@ -109,6 +124,14 @@ public class PropertiesUtil {
 	 *
 	 */
 	private class DefaultProperties {
+		/**
+		 * 是否使用HDFS配置文件
+		 */
+		public static final String USE_HDFS_PROPERTIES = "false";
+		/**
+		 * 默认HDFS配置文件URL
+		 */
+		public static final String HDFS_PROPERTIES_URL = "";
 		/**
 		 * 选取车辆范围
 		 */
@@ -162,6 +185,14 @@ public class PropertiesUtil {
 	/*
 	 * 以下是Properties文件调取方法
 	 */
+	
+	public static boolean useHdfsProperties() {
+		return Boolean.valueOf(prop.getProperty("tsp.useHdfsProperties", DefaultProperties.USE_HDFS_PROPERTIES));
+	}
+	
+	public static String hdfsPropertiesUrl() {
+		return prop.getProperty("tsp.hdfsPropertiesUrl", DefaultProperties.HDFS_PROPERTIES_URL);
+	}
 	
 	public static double vehicleScope() {
 		return Double.valueOf(prop.getProperty("tsp.vehicleScope", DefaultProperties.VEHICLE_SCOPE));

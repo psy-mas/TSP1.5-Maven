@@ -25,7 +25,7 @@
 		<mapper
 			resource="edu/scut/emos/tsp/dao/mysql/mapping/DWindowCommitCacheResultMapper.xml" />
 		<mapper
-			resource="edu/scut/emos/tsp/dao/mysql/mapping/DWindowCommitRecomputationOrderMapper.xml" />
+			resource="edu/scut/emos/tsp/dao/mysql/mapping/DWindowCommitFailedOrderMapper.xml" />
 		<mapper
 			resource="edu/scut/emos/tsp/dao/mysql/mapping/DWindowCommitResultMapper.xml" />
 	</mappers>

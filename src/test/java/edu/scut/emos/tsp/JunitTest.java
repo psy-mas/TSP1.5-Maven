@@ -24,7 +24,7 @@ public class JunitTest {
 	public void test1() {
 		System.out.println("this is test1");
 		
-		System.out.println(ClassLoader.getSystemResource(""));
+		System.out.println(ClassLoader.getSystemResource("log4j.xml"));
 	}
 	
 	@Test
