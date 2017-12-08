@@ -37,7 +37,11 @@ public class Vehicle {
         this.loadedWeight = loadedWeight;
         this.loadedVolume = loadedVolume;
         this.lock = lock;
-        this.route = route;
+        if (route == null) {
+            this.route = new Route();
+        } else {
+            this.route = route;
+        }
     }
 
     public String getId() {
@@ -156,8 +160,9 @@ public class Vehicle {
         return route;
     }
 
-    public void setRoute(Route route) {
-        this.route = route;
+    public static void main(String[] args) {
+        Vehicle vehicle = new Vehicle(null, 0, 0, 0, null, 0, 0, null, null, 0,
+                null, 0, 0, true, null);
     }
 
     @Override
@@ -205,5 +210,13 @@ public class Vehicle {
                 "   position: " + (position == null ? "" : AddressTranslation.addressTranslation(position) + " " + position.toString()) + "\n" +
                 "   gps update time: " + (gpsUpdateTime == null ? "" : gpsUpdateTime.toString()) + "\n" +
                 "   " + (route == null ? "no route" : route.toString()) + "\n}\n";
+    }
+
+    public void setRoute(Route route) {
+        if (route == null) {
+            this.route = new Route();
+        } else {
+            this.route = route;
+        }
     }
 }

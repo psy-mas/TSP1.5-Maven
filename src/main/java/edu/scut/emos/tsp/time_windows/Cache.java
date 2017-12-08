@@ -10,8 +10,8 @@ public class Cache {
     private LinkedList<AlgorithmResult> algorithmResults;
     private HashMap<Vehicle, LinkedList<AlgorithmResult>> map;
 
-    private LinkedList<String> recomputationOrderIDs;  // 需要重新计算的订单列表
-    private LinkedList<String> noMatchingOrderIDs;     // 没有车辆可匹配的订单列表
+    private LinkedList<FailedOrder> failedOrderIDs;     // 计算失败的订单
+
 
     public Cache() {
     }
@@ -22,8 +22,7 @@ public class Cache {
             this.algorithmResults.addAll(algorithmResults);
         }
 
-        this.recomputationOrderIDs = new LinkedList<>();
-        this.noMatchingOrderIDs = new LinkedList<>();
+        this.failedOrderIDs = new LinkedList<>();
 
         this.initialMap();
     }
@@ -39,7 +38,7 @@ public class Cache {
                 }
                 // 算法结果推荐路径为空，则说明订单不可插入该车，则将订单存入没有车辆匹配的订单列表中
                 if (algorithmResult.getRecommendRoute() == null) {
-                    noMatchingOrderIDs.add(algorithmResult.getOrder().getId());
+                    failedOrderIDs.add(new FailedOrder(algorithmResult.getOrder().getId(), 0));
                     continue;
                 }
 
@@ -82,8 +81,7 @@ public class Cache {
 
         CommitResult commitResult = new CommitResult();
         commitResult.setCacheResults(cacheResults);
-        commitResult.setRecomputationOrderIDs(recomputationOrderIDs);
-        commitResult.setNoMatchingOrderIDs(noMatchingOrderIDs);
+        commitResult.setFailedOrderIDs(failedOrderIDs);
         return commitResult;
     }
 
@@ -118,9 +116,9 @@ public class Cache {
                 orderIds.add(result.getOrder().getId());
             } else {
                 // resultArrays中i之后的所有订单均需要重新计算
-                recomputationOrderIDs.add(result.getOrder().getId());
+                failedOrderIDs.add(new FailedOrder(result.getOrder().getId(), 1));
                 for (int j = i + 1; j < resultArrays.length; j++) {
-                    recomputationOrderIDs.add(resultArrays[j].getOrder().getId());
+                    failedOrderIDs.add(new FailedOrder(resultArrays[j].getOrder().getId(), 1));
                 }
                 break;
             }

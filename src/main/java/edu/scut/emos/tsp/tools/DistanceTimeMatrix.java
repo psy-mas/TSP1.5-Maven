@@ -16,16 +16,19 @@ import java.util.HashMap;
 
 public class DistanceTimeMatrix {
 
-    public static HashMap<DTKey, DTValue> computeDistanceTimeTable(Position[] positionArray) {
-
+    public static HashMap<DTKey, DTValue> computeDistanceTimeTable(Position[] positionArray) throws NullPointerException, IllegalArgumentException {
         HashMap<DTKey, DTValue> dtMap = new HashMap<>();
+        if (positionArray == null)
+            throw new NullPointerException("位置数组为空!");
+
         int length = positionArray.length;
         if (length <= 50 && length>=2) {
             getRouterMatrix(positionArray, dtMap);
+            return dtMap;
         } else {
              throw  new IllegalArgumentException("位置数组超过50或者位置数组长度小于2");
         }
-        return dtMap;
+
 //        for (int i = 0; i < positionArray.length; i++) {
 //            for (int j = i; j < positionArray.length; j++) {
 //                DTKey key = new DTKey(positionArray[i], positionArray[j]);
